@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('news', function (Blueprint $table) {
+        Schema::create('draft_news', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('body');
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('comment')->nullable();
-            $table->integer('status')->default(0)->comment('0 = pending, 1 = approved by centre, 2 = approved by reading, 3 = pending for approval by graphics, 4 = rejected');
+            $table->integer('status')->default(0);
             $table->string('reporter')->nullable();
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists('draft_news');
     }
 };

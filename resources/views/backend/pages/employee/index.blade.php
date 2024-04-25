@@ -111,8 +111,8 @@
                                     <div class="btn-group btn-block" role="group" aria-label="Basic example">
                                         <a href="{{ route('employee.show', $employee->id) }}" type="button" class="btn btn-sm  btn-primary">View</a>
                                         <a href="{{ route('employee.edit', $employee->id) }}" type="button" class="btn btn-sm btn-info">Edit</a>
-                                        <a href="{{ route('employee.delete', $employee->id) }}" onclick="return confirm('Are you suer to Delete!')"  type="button" class="btn btn-sm btn-danger">Delete</a>
-                                    </div>
+                                        <button onclick="deleteData({{ $employee->id }})" type="button"
+                                            class="btn btn-sm btn-danger">Delete</button>                                    </div>
                                 </td>
                                 
                             </tr>
@@ -128,6 +128,33 @@
 </section>
 
 <script>
+ async function deleteData(id) {
+
+Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+    if (result.isConfirmed) {
+        axios.delete('/employee/delete/' + id)
+            .then(function(response) {
+                window.location.reload();
+            })
+        Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+        });
+    }
+});
+
+
+}
+    
     fetchData();
     function fetchData() {
         axios.get('/welcome')

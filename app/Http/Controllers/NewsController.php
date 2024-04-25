@@ -1,12 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\CentreNews;
 use Exception;
 use Carbon\Carbon;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\NewsForwarding;
+use Illuminate\Support\Facades\File;
+
 class NewsController extends Controller
 {
     /**
@@ -14,34 +18,14 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $newses = News::whereDate('created_at', Carbon::today())->with('user', 'forward')->get();
+        $newses = News::whereDate('created_at', Carbon::today())->with('user')->get();
 
         // Array to store chief reporter names
-        $chiefReporterNames = [];
-
-        // Iterate over each news article to retrieve the chief reporter's name
-        foreach ($newses as $news) {
-            // Check if the news has any forwardings
-            if ($news->forward->isNotEmpty()) {
-                // Iterate over each forwarding
-                foreach ($news->forward as $forwarding) {
-                    // Retrieve the chief reporter's ID from the forwarding
-                    $chiefReporterId = $forwarding->chief_reporter_id;
-
-                    // Retrieve the chief reporter using their ID
-                    $chiefReporter = User::find($chiefReporterId);
-
-                    // Check if the chief reporter exists and has a name
-                    if ($chiefReporter && $chiefReporter->name) {
-                        // Add the chief reporter's name to the array
-                        $chiefReporterNames[] = $chiefReporter->name;
-                    }
-                }
-            }
-        }
+        
+        
 
         // Pass the chief reporter names and news articles to the view
-        return view('backend.pages.news.index', compact('newses', 'chiefReporterNames'));
+        return view('backend.pages.news.index', compact('newses'));
     }
 
     /**
@@ -57,11 +41,12 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         $validatedData = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string', 'max:255'],
             'reporter' => ['required', 'string', 'max:255'],
-            'image' => ['required', 'mimes:png,jpg,jpeg,gif,svg,webp', 'max:2048'],
+            'image' => ['required', 'max:2048'],
         ]);
 
         $img = $request->file('image');
@@ -69,11 +54,11 @@ class NewsController extends Controller
         $t = time();
         $file_name = $img->getClientOriginalName();
         $img_name = "{$t}-{$file_name}";
-        $imgUrl = "uploads/profile/{$img_name}";
+        $imgUrl = "uploads/draft/{$img_name}";
 
         // Upload File
-        $img->move(public_path('uploads/profile'), $img_name);
-        $news = News::create([
+        $img->move(public_path('uploads/draft'), $img_name);
+     $news =  News::create([
             'title' => $validatedData['title'],
             'body' => $validatedData['body'],
             'comment' => $request->comment,
@@ -82,12 +67,19 @@ class NewsController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        // forwording
-        NewsForwarding::create([
-            'news_id' => $news->id,
-            'chief_reporter_id' => $request->chief_reporter_id,
-        ]);
-        return redirect()->back()->with('success', 'News created successfully.');
+
+   
+            CentreNews::create([
+                'title' => $validatedData['title'],
+                'body' => $validatedData['body'],
+                'comment' => $request->comment,
+                'image' => $imgUrl,
+                'user_id' => auth()->user()->id,
+                'news_id' => $news->id
+            ]);
+      
+
+        return redirect()->back()->with('success', 'News successfully Send To Centre.');
     }
 
     /**
@@ -95,7 +87,8 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        //
+        return "ok";
+        
     }
 
     /**
@@ -103,7 +96,8 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        //
+       return view('backend.pages.news.edit', compact('news'));
+
     }
 
     /**
@@ -111,7 +105,49 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'body' => ['required', 'string', 'max:255'],
+            'reporter' => ['required', 'string', 'max:255'],
+          
+        ]);
+
+
+      if($request->hasFile('image')){
+
+        $img = $request->file('image');
+
+        $t = time();
+        $file_name = $img->getClientOriginalName();
+        $img_name = "{$t}-{$file_name}";
+        $imgUrl = "uploads/draft/{$img_name}";
+
+        // Upload File
+        $img->move(public_path('uploads/draft'), $img_name);
+        $news->update([
+            'title' => $validatedData['title'],
+            'body' => $validatedData['body'],
+            'comment' => $request->comment,
+            'reporter' => $validatedData['reporter'],
+            'image' => $imgUrl,
+            'user_id' => auth()->user()->id,
+        ]);
+        return redirect()->back()->with('success', 'News Updated Save to Draft successfully.');
+
+
+    }else{
+
+        $news->update([
+            'title' => $validatedData['title'],
+            'body' => $validatedData['body'],
+            'comment' => $request->comment,
+            'reporter' => $validatedData['reporter'],
+            'user_id' => auth()->user()->id,
+            'image' => $news->image,
+        ]);
+        return redirect('/news')->with('success', 'News Updated Save to Draft successfully.');
+
+    }
     }
 
     /**
@@ -119,6 +155,9 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        File::delete($news->image);
+        // Delete the image
+        $news->delete();
+      
     }
 }

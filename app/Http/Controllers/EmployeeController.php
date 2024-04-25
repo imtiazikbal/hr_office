@@ -76,7 +76,7 @@ class EmployeeController extends Controller
             ]);
 
             // Create Employee
-            $employee = Employee::create([
+            Employee::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
@@ -186,7 +186,7 @@ class EmployeeController extends Controller
                 'department_id' => $validatedData['department_id'],
                 'position_id' => $validatedData['position_id'],
                 'image' => $imgUrl,
-                'user_id' => $user->id,
+                'user_id' => $employee->user_id,
             ]);
 
             return redirect('/employee')->with('success', 'Employee updated successfully');
@@ -227,6 +227,5 @@ class EmployeeController extends Controller
         File::delete($employee->image);
         $employee->delete();
 
-        return redirect()->back()->with('success', 'Employee deleted successfully.');
     }
 }

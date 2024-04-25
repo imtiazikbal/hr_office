@@ -92,7 +92,7 @@
                             <div>
                                 <a href="saleslist.php" class="nav-link text-white p-2 mb-2 sidebar_link" 
                                     data-toggle="collapse" data-target="#catcollapse" aria-expanded="true">
-                                    <span class="mnuIcon">&#9780;</span> News
+                                    <span class="mnuIcon">&#9780;</span> My News
                                     <i class="fas fa-angle-down fa-lg float-right pt-1"></i>
                                 </a>
                                 <div id="catcollapse" class="collapse auto-collapse">
@@ -110,49 +110,49 @@
                             </div>
                         </li>
 
-                        {{-- <li class="nav-item"> 
+                       <li class="nav-item"> 
                             <div>
                                 <a href="sliderlist.php" class="nav-link text-white p-2 mb-2 sidebar_link" 
                                     data-toggle="collapse" data-target="#sliderCollapse" aria-expanded="true">
-                                    <span class="mnuIcon">&#9780;</span> Slider Manage
+                                    <span class="mnuIcon">&#9780;</span> Centre News
                                     <i class="fas fa-angle-down fa-lg float-right pt-1"></i>
                                 </a>
                                 <div id="sliderCollapse" class="collapse auto-collapse">
                                       <div class="card-body p-0">
                                         <ul class="nav-item pl-3 dropdownMenuItem">
-                                            <a href="sliderlist.php" class="nav-link py-1">
-                                                <i class="fas fa-box-open pt-1 mr-2"></i>Slider List
+                                            <a href="{{ route('centre') }}" class="nav-link py-1">
+                                                <i class="fas fa-box-open pt-1 mr-2"></i>News List
                                             </a>
                                             <a href="slideradd.php" class="nav-link py-1">
-                                                <i class="fas fa-box pt-1 mr-2"></i> Add Slider
+                                                <i class="fas fa-box pt-1 mr-2"></i> Add News
                                             </a>
                                         </ul>
                                     </div> 
                                 </div>
                             </div>
-                        </li> --}}
+                        </li>
 
-                        {{-- <li class="nav-item"> 
+                  <li class="nav-item"> 
                             <div>
                                 <a href="saleslist.php" class="nav-link text-white p-2 mb-2 sidebar_link" 
                                     data-toggle="collapse" data-target="#catcollapse" aria-expanded="true">
-                                    <span class="mnuIcon">&#9780;</span> Category Manage
+                                    <span class="mnuIcon">&#9780;</span> Draft News
                                     <i class="fas fa-angle-down fa-lg float-right pt-1"></i>
                                 </a>
                                 <div id="catcollapse" class="collapse auto-collapse">
                                       <div class="card-body p-0">
                                         <ul class="nav-item pl-3 dropdownMenuItem">
                                             <a href="categorylist.php" class="nav-link py-1">
-                                                <i class="fas fa-box-open pt-1 mr-2"></i>Category List
+                                                <i class="fas fa-box-open pt-1 mr-2"></i>News List
                                             </a>
-                                            <a href="categoryadd.php" class="nav-link py-1">
+                                            {{-- <a href="categoryadd.php" class="nav-link py-1">
                                                 <i class="fas fa-box pt-1 mr-2"></i> Add Category
-                                            </a>
+                                            </a> --}}
                                         </ul>
                                     </div> 
                                 </div>
                             </div>
-                        </li> --}}
+                        </li> 
 
                         {{-- <li class="nav-item"> 
                             <div>

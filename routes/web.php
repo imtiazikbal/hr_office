@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CentreNewsController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DraftNewsController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PositionController;
@@ -101,6 +103,34 @@ Route::controller(NewsController::class)->group(function () {
     Route::post('news/update/{news}', 'update')->name('news.update');
     Route::delete('news/delete/{news}', 'destroy')->name('news.delete');
 })->middleware(['auth', 'verified']);
+
+//here only Draft News route
+
+Route::controller(DraftNewsController::class)->group(function () {
+    Route::get('draft', 'index')->name('draft');
+    Route::get('draft/show', 'show')->name('draft.show');
+    Route::get('draft/create', 'create')->name('draft.create');
+    Route::post('draft/store', 'store')->name('draft.store');
+    Route::get('draft/edit/{draft}', 'edit')->name('draft.edit');
+    Route::post('draft/update/{draft}', 'update')->name('draft.update');
+    Route::delete('draft/delete/{draft}', 'destroy')->name('draft.delete');
+})->middleware(['auth', 'verified']);
+
+
+
+
+//here only News route
+
+Route::controller(CentreNewsController::class)->group(function () {
+    Route::get('centre', 'index')->name('centre');
+    Route::get('centre/show/{centreNews}', 'show')->name('centre.show');
+    Route::get('centre/create', 'create')->name('centre.create');
+    Route::post('centre/store', 'store')->name('centre.store');
+    Route::get('centre/edit/{centreNews}', 'edit')->name('centre.edit');
+    Route::post('centre/update/{centreNews}', 'update')->name('centre.update');
+    Route::delete('centre/delete/{centreNews}', 'destroy')->name('centre.delete');
+})->middleware(['auth', 'verified']);
+
 
 
 

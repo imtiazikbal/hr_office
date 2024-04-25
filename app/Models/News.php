@@ -16,4 +16,8 @@ class News extends Model
          return $this->hasMany(NewsForwarding::class);
          
      }
+     public function centreNews(){
+         return $this->hasMany(CentreNews::class);
+         
+     }
 }

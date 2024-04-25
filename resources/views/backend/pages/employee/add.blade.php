@@ -48,7 +48,7 @@
                                         class="col-sm-4 col-form-label col-form-label-sm"><strong>Email
                                             Address : </strong></label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="email" id="email"  value="{{ old('email') }}"
+                                        <input type="text" name="email" id="email" value="{{ old('email') }}"
                                             class="form-control form-control-sm form_check_color_right" id="EmailAddress"
                                             placeholder="Email Address here..." required>
                                     </div>
@@ -62,7 +62,7 @@
                                             :
                                         </strong></label>
                                     <div class="col-sm-8">
-                                        <input type="text" name="username" id="username"  value="{{ old('username') }}"
+                                        <input type="text" name="username" id="username" value="{{ old('username') }}"
                                             class="form-control form-control-sm form_check_color_right"
                                             placeholder="Username Name here..." required>
                                     </div>
@@ -90,7 +90,8 @@
                                         class="col-sm-4 col-form-label col-form-label-sm "><strong>Confirm Password :
                                         </strong></label>
                                     <div class="col-sm-8">
-                                        <input type="password" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}"
+                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                            value="{{ old('password_confirmation') }}"
                                             class="form-control form-control-sm form_check_color_right" id="ConfirmPassword"
                                             placeholder="Confirm Password here..." required>
                                     </div>
@@ -104,17 +105,34 @@
                                         </strong></label>
 
                                     <div class="col-sm-8">
-                                        <select class="custom-select form_check_color_right" id="role" name="role" value="{{ old('role') }}"
-                                            required>
-                                            <option value="">Select Role</option>
-                                            <option value="1">Hr. Admin</option>
-                                            <option value="6">It</option>
-                                            <option value="3">Desk</option>
-                                            <option value="4">Reporting</option>
-                                            <option value="5">Reading</option>
-                                            <option value="2">Online</option>
-                                        </select>
+                                        @if (Auth()->user()->role == 0 || Auth()->user()->role == 1)
+                                            <select class="custom-select form_check_color_right" id="role"
+                                                name="role" value="{{ old('role') }}" required>
+                                                <option value="">Select Role</option>
+                                                <option value="0">SuperAdmin</option>
+                                                <option value="2">Hr.Admin</option>
+                                                <option value="5">Reading</option>
+                                                <option value="6">Reporting</option>
+                                                <option value="3">Cheif Editor</option>
+                                                <option value="4">Sub Editor</option>
+                                                <option value="7">graphics</option>
+                                            </select>
+                                        @else
+                                            <select class="custom-select form_check_color_right" id="role"
+                                                name="role" value="{{ old('role') }}">
+
+
+
+                                                {{-- <option value="2">Hr.Admin</option> --}}
+                                                <option value="5">Reading</option>
+                                                <option value="6">Reporting</option>
+                                                <option value="3">Cheif Editor</option>
+                                                <option value="4">Sub Editor</option>
+                                                <option value="7">graphics</option>
+                                            </select>
+                                        @endif
                                     </div>
+                                    {{-- default('user')->comment('0 = SuperAdmin, 1 = Admin, 2 = hr, 3 = chief editor, 4 = sub editor, 5 = reading, 6 = reporting, 7 = graphics, user'); --}}
                                     @if ($errors->has('role'))
                                         <div class="error">{{ $errors->first('role') }}</div>
                                     @endif
@@ -146,13 +164,13 @@
                                             <strong> Department : </strong>
                                         </label>
                                         <div class="col-sm-8">
-                                            <select id="department_id" name="department_id" value="{{ old('department_id') }}"
+                                            <select id="department_id" name="department_id"
+                                                value="{{ old('department_id') }}"
                                                 class="custom-select form_check_color_right" required>
                                                 <option value="">Select Department</option>
-                                                @foreach ($departments as  $department )
-                                                    
-                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                    
+                                                @foreach ($departments as $department)
+                                                    <option value="{{ $department->id }}">{{ $department->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -173,16 +191,14 @@
                                         <select id="position_id" name="position_id" value="{{ old('position_id') }}"
                                             class="custom-select form_check_color_right" required>
                                             <option value="">Select Designation</option>
-                                            @foreach ($positions as  $position )
-                                                    
-                                            <option value="{{ $position->id }}">{{ $position->name }}</option>
-                                            
-                                        @endforeach
+                                            @foreach ($positions as $position)
+                                                <option value="{{ $position->id }}">{{ $position->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     @if ($errors->has('position_id'))
-                                            <div class="error">{{ $errors->first('position_id') }}</div>
-                                        @endif
+                                        <div class="error">{{ $errors->first('position_id') }}</div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group row">
@@ -191,13 +207,14 @@
                                             Joining Date
                                             : </strong></label>
                                     <div class="col-sm-8">
-                                        <input type="date" name="date_of_joining" value="{{ old('date_of_joining') }}" max="3000-12-31" min="1000-01-01"
+                                        <input type="date" name="date_of_joining"
+                                            value="{{ old('date_of_joining') }}" max="3000-12-31" min="1000-01-01"
                                             class="form-control form-control-sm border-0" id="date_of_joining"
                                             placeholder="Agent Expair Date" required>
                                     </div>
                                     @if ($errors->has('date_of_joining'))
-                                            <div class="error">{{ $errors->first('date_of_joining') }}</div>
-                                        @endif
+                                        <div class="error">{{ $errors->first('date_of_joining') }}</div>
+                                    @endif
                                 </div>
 
                                 <div class="form-group row">
@@ -206,7 +223,8 @@
                                             <strong> Employe Status : </strong>
                                         </label>
                                         <div class="col-sm-8">
-                                            <select id="status" name="status" value="{{ old('status') }}" class="custom-select border-0">
+                                            <select id="status" name="status" value="{{ old('status') }}"
+                                                class="custom-select border-0">
                                                 <option class="text-success" value="1">Active
                                                 </option>
                                                 <option class="text-danger" value="0">Deactive
@@ -214,8 +232,8 @@
                                             </select>
                                         </div>
                                         @if ($errors->has('status'))
-                                        <div class="error">{{ $errors->first('status') }}</div>
-                                    @endif
+                                            <div class="error">{{ $errors->first('status') }}</div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +249,8 @@
                                             <img id="thumbnil" src="{{ asset('assets') }}/img/uploadimg.png"
                                                 width="170" class="img-fluid m-2">
                                             <div class="form-group text-center">
-                                                <input type="file" name="image" id="image" value="{{ old('image') }}" accept="image/*"
+                                                <input type="file" name="image" id="image"
+                                                    value="{{ old('image') }}" accept="image/*"
                                                     onchange="showMyImage(this)"
                                                     class="form-control form-control-sm-file btn btn-light py-4 border-bottom"
                                                     id="productimage">
@@ -240,8 +259,8 @@
                                             </div>
                                         </div>
                                         @if ($errors->has('image'))
-                                        <div class="error">{{ $errors->first('image') }}</div>
-                                    @endif
+                                            <div class="error">{{ $errors->first('image') }}</div>
+                                        @endif
                                     </div>
                                     <script>
                                         /*show image script */

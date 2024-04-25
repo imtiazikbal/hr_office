@@ -12,10 +12,13 @@
                                 <div class="col text-uppercase ">
                                     <h5> <strong> Add Employe </strong> </h5>
                                 </div>
+                                <div class="col text-uppercase ">
+                                    <h5 > <strong class="text-danger"> You can Edit Here  </strong> </h5>
+                                </div>
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
-                                    <a href="{{ route('news') }}" class="btn btn-sm btn-info px-3 rounded-0">Todays
-                                        News</a>
+                                    <a href="{{ route('centre') }}" class="btn btn-sm btn-info px-3 rounded-0">Centre
+                                        News List</a>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +32,7 @@
 
                                 <div class="form-group row">
                                     <div class="col-sm-12">
-                                        <input type="text" name="title" id="title" value="{{ old('title') }}"
+                                        <input type="text" name="title" id="title" value="{{ $centreNews->title }}"
                                             id="colFormLabel" class="form-control form-control-lg form_check_color_right"
                                             placeholder="নিউজ হেডলাইন" required>
                                     </div>
@@ -40,7 +43,7 @@
 
                                 <div class="form-group row ">
                                     <div class="col-sm-12">
-                                        <input type="text" name="comment" id="comment" value="{{ old('comment') }}"
+                                        <input type="text" name="comment" id="comment" value="{{$centreNews->comment }}"
                                             class="form-control form-control-sm border-0" id="colFormLabel"
                                             placeholder="মন্তব্য (Not Required)">
                                     </div>
@@ -54,7 +57,7 @@
                                                 <strong> News Body : </strong>
                                             </label>
                                             <textarea name="body" id="body" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
-                                                {{ old('body') }}
+                                               {{ $centreNews->body }}
                                             </textarea> 
                                             {{-- <textarea name="body" id="body" cols="30" rows="10"></textarea> --}}
                                             <style type="text/css">
@@ -109,7 +112,7 @@
                                             <div>
                                                 <h4 class="border-bottom pb-2"><strong>Add News Photo</strong></h4>
                                             </div>
-                                            <img id="thumbnil" src="{{ asset('assets') }}/img/uploadimg.png" width="200"
+                                            <img id="thumbnil" src="{{ asset($centreNews->image) }}" width="200"
                                                 class="img-fluid my-2">
                                             <div class="form-group text-center">
                                                 <input type="file" name="image" id="image" accept="image/*"
@@ -154,15 +157,11 @@
                                             <strong> Reporter Name : </strong>
                                         </label>
                                         <div class="col-sm-7">
-                                            @auth
+                                           
                                                 <input type="text" name="reporter" id="reporter"
                                                     class="form-control form-control-sm" id="colFormLabel" readonly
-                                                    value="{{ Auth::user()->name }}">
-                                            @else
-                                                <input type="text" name="reporter" id="reporter"
-                                                    class="form-control form-control-sm" id="colFormLabel" readonly
-                                                    value="user">
-                                            @endauth
+                                                    value="{{ $centreNews->user->name }}">
+                                           
 
                                         </div>
                                     </div>
@@ -174,9 +173,9 @@
                                 <div class="row mb-5">
                                     <div class="col text-right">
                                         <button type="button" onclick="submitToDraft()"
-                                            class="btn btn-block btn-success py-4 shadow">Save</button>
+                                            class="btn btn-block btn-success py-4 shadow">Update News</button>
                                         <button type="button" onclick="submitToCentral()"
-                                            class="btn btn-block btn-success py-4 shadow">Save and Send To Central</button>
+                                            class="btn btn-block btn-success py-4 shadow">Send to Sub Editor</button>
                                     </div>
                                 </div>
                             </div>
@@ -191,14 +190,14 @@
         <script>
             function submitToDraft() {
                 // Set the form action to the draft route
-                document.getElementById('save-form').action = "{{ route('draft.store') }}";
+                document.getElementById('save-form').action = "{{ route('centre.update', $centreNews->id) }}";
                 // Submit the form
                 document.getElementById('save-form').submit();
             }
         
             function submitToCentral() {
                 // Set the form action to the central route
-                document.getElementById('save-form').action = "{{ route('news.store') }}";
+                // document.getElementById('save-form').action = "{{ route('centre.store',$centreNews->id) }}";
                 // Submit the form
                 document.getElementById('save-form').submit();
             }

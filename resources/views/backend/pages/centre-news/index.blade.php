@@ -10,8 +10,16 @@
                         <div class="col">
                             <div class="row shadow-sm text-muted">
                                 <div class="col text-uppercase ">
-                                    <h5> <strong> Todays All News </strong> </h5>
+                                    <h5> <strong> Todays All News(From Reporter) </strong> </h5>
                                 </div>
+
+
+                                <div class="col text-uppercase ">
+                                    <a href="{{ route('centre.view') }}" class="btn btn-sm btn-info px-3 rounded-0">
+                                        <strong> Sub Editor List</strong> </a>
+                                </div>
+
+
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
                                     <a href="{{ route('news.create') }}" class="btn btn-sm btn-info px-3 rounded-0">Add
@@ -20,8 +28,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     <!--Input Group Start-->
 

@@ -142,7 +142,7 @@
                                 <div id="catcollapse" class="collapse auto-collapse">
                                       <div class="card-body p-0">
                                         <ul class="nav-item pl-3 dropdownMenuItem">
-                                            <a href="categorylist.php" class="nav-link py-1">
+                                            <a href="{{ route('draft') }}" class="nav-link py-1">
                                                 <i class="fas fa-box-open pt-1 mr-2"></i>News List
                                             </a>
                                             {{-- <a href="categoryadd.php" class="nav-link py-1">
@@ -154,28 +154,28 @@
                             </div>
                         </li> 
 
-                        {{-- <li class="nav-item"> 
+                    <li class="nav-item"> 
                             <div>
                                 <a href="saleslist.php" class="nav-link text-white p-2 mb-2 sidebar_link" 
                                     data-toggle="collapse" data-target="#brandcollapse" aria-expanded="true">
-                                    <span class="mnuIcon">&#9780;</span> Brand Manage
+                                    <span class="mnuIcon">&#9780;</span>Sub Editors
                                     <i class="fas fa-angle-down fa-lg float-right pt-1"></i>
                                 </a>
                                 <div id="brandcollapse" class="collapse auto-collapse">
                                       <div class="card-body p-0">
                                         <ul class="nav-item pl-3 dropdownMenuItem">
-                                            <a href="brandlist.php" class="nav-link py-1">
-                                                <i class="fas fa-box-open pt-1 mr-2"></i>Brand List
+                                            <a href="{{ route('sub_editor') }}" class="nav-link py-1">
+                                                <i class="fas fa-box-open pt-1 mr-2"></i>News List
                                             </a>
                                             <a href="brandadd.php" class="nav-link py-1">
-                                                <i class="fas fa-box pt-1 mr-2"></i> Add Brand
+                                                <i class="fas fa-box pt-1 mr-2"></i> Add News
                                             </a>
                                         </ul>
                                     </div> 
                                 </div>
 
                             </div>
-                        </li> --}}
+                        </li> 
                         {{-- <li class="nav-item"> 
                             <div>
                                 <a href="supplier.php" class="nav-link text-white p-2 mb-2 sidebar_link" 

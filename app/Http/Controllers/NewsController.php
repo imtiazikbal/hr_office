@@ -18,9 +18,10 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $newses = News::whereDate('created_at', Carbon::today())->with('user')->get();
+       
 
-        // Array to store chief reporter names
+      $newses = News::whereDate('created_at', Carbon::today())->where('user_id', auth()->user()->id)->get();
+ 
         
         
 
@@ -42,41 +43,6 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
-        $validatedData = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string', 'max:255'],
-            'reporter' => ['required', 'string', 'max:255'],
-            'image' => ['required', 'max:2048'],
-        ]);
-
-        $img = $request->file('image');
-
-        $t = time();
-        $file_name = $img->getClientOriginalName();
-        $img_name = "{$t}-{$file_name}";
-        $imgUrl = "uploads/draft/{$img_name}";
-
-        // Upload File
-        $img->move(public_path('uploads/draft'), $img_name);
-     $news =  News::create([
-            'title' => $validatedData['title'],
-            'body' => $validatedData['body'],
-            'comment' => $request->comment,
-            'reporter' => $validatedData['reporter'],
-            'image' => $imgUrl,
-            'user_id' => auth()->user()->id,
-        ]);
-
-
-   
-            CentreNews::create([
-                'title' => $validatedData['title'],
-                'body' => $validatedData['body'],
-                'comment' => $request->comment,
-                'image' => $imgUrl,
-                'user_id' => auth()->user()->id,
-                'news_id' => $news->id
-            ]);
       
 
         return redirect()->back()->with('success', 'News successfully Send To Centre.');

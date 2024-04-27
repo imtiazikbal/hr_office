@@ -12,7 +12,7 @@
 
                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
 
-                                    <a href="{{ route('centre.edit', $centreNews->id) }}" type="button"
+                                    <a href="{{ route('draft.edit', $news->id) }}" type="button"
                                         class="btn btn-sm btn-info">Edit</a>
                                     
                                 </div>
@@ -26,7 +26,7 @@
 
                     <div class="col">
                         <span class="hidden" class="sharethis-inline-share-buttons"></span>
-                        <h2 class="title-details font-weight-bold">{{ $centreNews->title }}</h2>
+                        <h2 class="title-details font-weight-bold">{{ $news->title }}</h2>
                         <div class="row">
                             <div class="col">
                                 <h6 class="pb-1" style="color: #999999;">
@@ -34,7 +34,7 @@
                                     @php
                                         use App\Helper\Bengali;
 
-                                        $date = $centreNews->created_at;
+                                        $date = $news->created_at;
                                         $formattedDate = date('h:i A - d F Y', strtotime($date));
                                         $time = Bengali::bn_date_time($formattedDate);
 
@@ -50,7 +50,7 @@
 
                                 </h6>
                                 <div class="details">
-                                    <img src="{{ asset($centreNews->image) }}" class="card-img-top rounded-0" title="news title"
+                                    <img src="{{ asset($news->image) }}" class="card-img-top rounded-0" title="news title"
                                         alt="">
                                 </div>
                                 <style>
@@ -93,11 +93,11 @@
                                             </path>
                                             <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
                                         </svg>
-                                        {{ $centreNews->reporter }}
+                                        {{ $news->reporter }}
 
                                 </h5>
 
-                                {!! $centreNews->body !!}
+                                {!! $news->body !!}
 
                             </div>
                         </div>

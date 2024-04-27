@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubEditorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +35,7 @@ Route::get('/welcome', function () {
     return User::all();
 });
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::get('/addEmployee', function () {
     return view('addEmployee');
@@ -108,27 +109,44 @@ Route::controller(NewsController::class)->group(function () {
 
 Route::controller(DraftNewsController::class)->group(function () {
     Route::get('draft', 'index')->name('draft');
-    Route::get('draft/show', 'show')->name('draft.show');
+    Route::get('draft/show/{news}', 'show')->name('draft.show');
     Route::get('draft/create', 'create')->name('draft.create');
     Route::post('draft/store', 'store')->name('draft.store');
-    Route::get('draft/edit/{draft}', 'edit')->name('draft.edit');
-    Route::post('draft/update/{draft}', 'update')->name('draft.update');
-    Route::delete('draft/delete/{draft}', 'destroy')->name('draft.delete');
+
+    Route::get('draft/edit/{draftNews}', 'edit')->name('draft.edit');
+    Route::post('draft/update/{draftNews}', 'update')->name('draft.update');
+    Route::delete('draft/delete/{draftNews}', 'destroy')->name('draft.delete');
 })->middleware(['auth', 'verified']);
 
 
 
 
-//here only News route
+//here only Centre News route
 
 Route::controller(CentreNewsController::class)->group(function () {
     Route::get('centre', 'index')->name('centre');
     Route::get('centre/show/{centreNews}', 'show')->name('centre.show');
     Route::get('centre/create', 'create')->name('centre.create');
     Route::post('centre/store', 'store')->name('centre.store');
+    Route::get('centre/view', 'view')->name('centre.view');
+    Route::post('centre/store/draft/{id}', 'draft_store')->name('centre.store.draft');
     Route::get('centre/edit/{centreNews}', 'edit')->name('centre.edit');
     Route::post('centre/update/{centreNews}', 'update')->name('centre.update');
     Route::delete('centre/delete/{centreNews}', 'destroy')->name('centre.delete');
+})->middleware(['auth', 'verified']);
+
+
+//here only Sub editors News route
+
+Route::controller(SubEditorController::class)->group(function () {
+    Route::get('sub_editor', 'index')->name('sub_editor');
+    Route::get('centre/show/{subEditor}', 'show')->name('sub_editor.show');
+    Route::get('centre/create', 'create')->name('sub_editor.create');
+    Route::post('centre/store/{subEditor}', 'store')->name('sub_editor.store');
+    Route::post('centre/store/draft/{subEditor}', 'draft_store')->name('sub_editor.store.draft');
+    Route::get('centre/edit/{subEditor}', 'edit')->name('sub_editor.edit');
+    Route::post('centre/update/{subEditor}', 'update')->name('sub_editor.update');
+    Route::delete('centre/delete/{subEditor}', 'destroy')->name('sub_editor.delete');
 })->middleware(['auth', 'verified']);
 
 

@@ -194,7 +194,7 @@
         
             function submitToCentral() {
                 // Set the form action to the central route
-                document.getElementById('save-form').action = "{{ route('centre.store') }}";
+                document.getElementById('save-form').action = "{{ route('centre.store.draft', $news->id) }}";
                 // Submit the form
                 document.getElementById('save-form').submit();
             }

@@ -10,9 +10,8 @@
                         <div class="col">
                             <div class="row shadow-sm text-muted">
                                 <div class="col text-uppercase ">
-                                    <h5> <strong> Todays All News </strong> </h5>
+                                    <h5> <strong> Draft News </strong> </h5>
                                 </div>
-
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
                                     <a href="{{ route('news.create') }}" class="btn btn-sm btn-info px-3 rounded-0">Add
@@ -21,8 +20,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     <!--Input Group Start-->
 
@@ -36,26 +33,18 @@
 
                                         <th>Title</th>
                                         <th>Reporter</th>
-                                        <th>Step</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-
                                 <tbody class="" style="font-size:0.9em;">
-                                    @foreach ($newses as $news)
+                                    @foreach ($draftNews as $news)
                                         <tr>
-
                                             <td>{{ $loop->iteration }}</td>
                                             <td>
                                                 <img src="{{ asset($news->image) }}" width="50px" alt="">
                                             </td>
                                             <td>{{ $news->title }}</td>
                                             <td>{{ $news->reporter }}</td>
-                                            <td
-                                                class="badge  text-center {{ $news->status == 1 ? ' badge-warning' : ($news->status == 2 ? 'badge-light' : ($news->status == 2 ? 'badge-success' : 'badge-danger')) }}">
-                                                {{ $news->status == 1 ? 'Centre' : ($news->status == 2 ? 'Sub Editor' : ($news->status == 0 ? 'Centre' : ($news->status == 3 ? 'Approved by Graphics' : 'Pending'))) }}
-                                            </td>
-
 
 
 
@@ -63,9 +52,9 @@
                                             <td>
 
                                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                    <a href="" type="button"
+                                                    <a href="{{ route('draft.show', $news->id) }}" type="button"
                                                         class="btn btn-sm  btn-primary">View</a>
-                                                    {{-- <a href="{{ route('news.edit', $news->id) }}" type="button"
+                                                    {{-- <a href="{{ route('draft.edit', $news->id) }}" type="button"
                                                         class="btn btn-sm btn-info">Edit</a> --}}
                                                     <button onclick="deleteData({{ $news->id }})" type="button"
                                                         class="btn btn-sm btn-danger">Delete</button>
@@ -98,7 +87,7 @@
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete('/news/delete/' + id)
+                    axios.delete('/draft/delete/' + id)
                         .then(function(response) {
                             window.location.reload();
                         })

@@ -11,20 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('centre_news', function (Blueprint $table) {
+        Schema::create('sub_editors', function (Blueprint $table) {
             $table->id();
+
             $table->string('title');
+
             $table->text('body');
             $table->string('image')->nullable();
-
+            
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             
+                 
+            $table->unsignedBigInteger('reporter_id');
+            $table->foreign('reporter_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->unsignedBigInteger('news_id');
             $table->foreign('news_id')->references('id')->on('news')->onDelete('cascade');
-            
+
+            $table->string('column_no')->nullable();
+            $table->string('page_no')->nullable();
+
             $table->string('comment')->nullable();
-            $table->integer('status')->default(0)->comment('0 = pending, 1 = approved by centre, 2 = approved by reading, 3 = pending for approval by graphics, 4 = rejected');
+            $table->integer('status')->default(0)->comment('0 = pending, 1 = approved by reading, 2 = pending for approval by graphics, 3 = rejected');
 
             $table->string('note')->nullable();
             $table->timestamps();
@@ -36,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('centre_news');
+        Schema::dropIfExists('sub_editors');
     }
 };

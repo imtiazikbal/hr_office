@@ -10,12 +10,15 @@
                         <div class="col">
                             <div class="row shadow-sm text-muted">
                                 <div class="col text-uppercase ">
-                                    <h5> <strong> Todays All News </strong> </h5>
+                                    <h5> <strong>Sub Editor News That you Forward </strong> </h5>
                                 </div>
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
+                                    <a href="{{ route('centre') }}" class="btn btn-sm btn-info px-3 rounded-0">Back
+                                    </a>
                                     <a href="{{ route('news.create') }}" class="btn btn-sm btn-info px-3 rounded-0">Add
-                                        News</a>
+                                        News
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -35,12 +38,13 @@
 
                                         <th>Title</th>
                                         <th>Reporter</th>
+                                        <th>status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
 
                                 <tbody class="" style="font-size:0.9em;">
-                                    @foreach ($newses as $news)
+                                    @foreach ($news as $news)
                                         <tr>
 
                                             <td>{{ $loop->iteration }}</td>
@@ -48,7 +52,11 @@
                                                 <img src="{{ asset($news->image) }}" width="50px" alt="">
                                             </td>
                                             <td>{{ $news->title }}</td>
-                                            <td>{{ $news->reporter }}</td>
+                                            <td>{{ $news->user->name }}</td>
+                                            <td class="badge  text-center {{ $news->status == 1 ? 'badge-success' : 'badge-info' }}">
+                                                {{ $news->status == 1 ? 'Approved by Centre' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
+                                            </td>
+
 
 
 

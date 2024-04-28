@@ -3,7 +3,7 @@
 @section('content')
     <section class="mt-md-4 pt-md-3">
         <div class="container-fluid">
-            <div class="row" style="color: #444; background-color: #e7e2e2">
+            <div class="row" style="color: #444; background-color: #ffffff">
                 <div class="col-xl-10 col-lg-9 col-md-9 ml-auto">
 
                     <div class="row py-2 ">
@@ -12,9 +12,7 @@
 
                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
 
-                                    <a href="{{ route('sub_editor.edit', $subEditor->id) }}" type="button"
-                                        class="btn btn-sm btn-info">Edit
-                                    </a>
+                                <a class="btn btn-sm btn-info" href="{{ route('news') }}">Back</a>
                                     
                                     
                                 </div>
@@ -28,7 +26,7 @@
 
                     <div class="col">
                         <span class="hidden" class="sharethis-inline-share-buttons"></span>
-                        <h2 class="title-details font-weight-bold">{{ $subEditor->title }}</h2>
+                        <h2 class="title-details font-weight-bold">{{ $news->title }}</h2>
                         <div class="row">
                             <div class="col">
                                 <h6 class="pb-1" style="color: #999999;">
@@ -36,7 +34,7 @@
                                     @php
                                         use App\Helper\Bengali;
 
-                                        $date = $subEditor->created_at;
+                                        $date = $news->created_at;
                                         $formattedDate = date('h:i A - d F Y', strtotime($date));
                                         $time = Bengali::bn_date_time($formattedDate);
 
@@ -51,8 +49,8 @@
                                     </span>
 
                                 </h6>
-                                <div class="details">
-                                    <img src="{{ asset($subEditor->image) }}" class="card-img-top rounded-0" title="news title"
+                                <div class="details text-center">
+                                    <img src="{{ asset($news->image) }}" class="card-img-top rounded-0" title="news title"
                                         alt="">
                                 </div>
                                 <style>
@@ -95,11 +93,12 @@
                                             </path>
                                             <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
                                         </svg>
-                                        {{ $subEditor->reporter }}
+                                        Reporter:
+                                        {{ $news->reporter }}
 
                                 </h5>
 
-                                {!! $subEditor->body !!}
+                                {!! $news->body !!}
 
                             </div>
                         </div>

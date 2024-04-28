@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <section class="mt-md-4 pt-md-3">
         <div class="container-fluid">
             <div class="row" style="color: #444;">
@@ -10,7 +11,7 @@
                         <div class="col">
                             <div class="row shadow-sm text-muted">
                                 <div class="col text-uppercase ">
-                                    <h5> <strong> Todays All News </strong> </h5>
+                                    <h5> <strong> My Todays All News </strong> </h5>
                                 </div>
 
                                 <!-- Button Add Category modal -->
@@ -37,6 +38,7 @@
                                         <th>Title</th>
                                         <th>Reporter</th>
                                         <th>Step</th>
+                                        <th>Last Activity</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -52,18 +54,20 @@
                                             <td>{{ $news->title }}</td>
                                             <td>{{ $news->reporter }}</td>
                                             <td
-                                                class="badge  text-center {{ $news->status == 1 ? ' badge-warning' : ($news->status == 2 ? 'badge-light' : ($news->status == 2 ? 'badge-success' : 'badge-danger')) }}">
-                                                {{ $news->status == 1 ? 'Centre' : ($news->status == 2 ? 'Sub Editor' : ($news->status == 0 ? 'Centre' : ($news->status == 3 ? 'Approved by Graphics' : 'Pending'))) }}
+                                                class="badge  text-center {{ $news->status == 1 ? ' badge-warning' : ($news->status == 2 ? 'badge-light' : ($news->status == 2 ? 'badge-success' : 'badge-primary')) }}">
+                                                {{ $news->status == 1 ? 'Centre' : ($news->status == 2 ? 'Sub Editor' : ($news->status == 0 ? 'Centre' : ($news->status == 3 ? 'Reading' : 'Approved By Reading'))) }}
                                             </td>
-
-
-
+                                           
+                                            <td>
+                                                {{ "Posted by " . $news->user->name . " on " . $news->created_at->format('Y-m-d H:i:s') . ". ".'Updated by ' . $news->logs }}
+                                            </td>
+                                            
 
 
                                             <td>
 
                                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                    <a href="" type="button"
+                                                    <a href="{{ route('news.show', $news->id) }}" type="button"
                                                         class="btn btn-sm  btn-primary">View</a>
                                                     {{-- <a href="{{ route('news.edit', $news->id) }}" type="button"
                                                         class="btn btn-sm btn-info">Edit</a> --}}

@@ -198,7 +198,7 @@
                                         {{-- <button type="button" onclick="submitToDraft()"
                                             class="btn btn-block btn-success py-4 shadow">Update to Draft</button> --}}
                                         <button type="button" onclick="submitToCentral()"
-                                            class="btn btn-block btn-primary py-4 shadow">Send to Sub Editor</button>
+                                            class="btn btn-block btn-primary py-4 shadow">Update Send to Sub Editor</button>
                                     </div>
                                 </div>
                             </div>
@@ -211,16 +211,11 @@
             </div>
         </div>
         <script>
-            function submitToDraft() {
-                // Set the form action to the draft route
-                document.getElementById('save-form').action = "{{ route('draft.update', $centreNews->id) }}";
-                // Submit the form
-                document.getElementById('save-form').submit();
-            }
+            
         
             function submitToCentral() {
                 // Set the form action to the central route
-                document.getElementById('save-form').action = "{{ url('centre/store/'.$centreNews->id) }}";
+                document.getElementById('save-form').action = "{{ url('sub_editor/store/'.$centreNews->id) }}";
                 // Submit the form
                 document.getElementById('save-form').submit();
             }

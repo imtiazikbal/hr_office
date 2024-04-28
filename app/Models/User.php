@@ -15,6 +15,10 @@ class User extends Authenticatable
 public function employee(){
     return $this->hasMany(Employee::class);
 }
+public function reading(){
+    return $this->hasMany(Reading::class);
+    
+}
 
 
 

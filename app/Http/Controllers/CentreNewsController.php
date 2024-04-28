@@ -6,7 +6,7 @@ use App\Models\News;
 use App\Models\CentreNews;
 use App\Models\DraftNews;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class CentreNewsController extends Controller
 {
     /**
@@ -197,6 +197,10 @@ class CentreNewsController extends Controller
                 'image' => $imgUrl,
                 'user_id' => $centreNews->user_id,
             ]);
+            $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
+
+            News::where('id', $centreNews->news_id)
+                ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
             return redirect('centre')->with('success', 'News Updated Central News successfully.');
         } else {
             $centreNews->update([
@@ -206,6 +210,10 @@ class CentreNewsController extends Controller
                 'image' => $centreNews->image,
                 'user_id' => $centreNews->user_id,
             ]);
+            $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
+
+            News::where('id', $centreNews->news_id)
+                ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
             return redirect('centre')->with('success', 'News Updated Central News successfully.');
         }
     }
@@ -216,5 +224,10 @@ class CentreNewsController extends Controller
     public function destroy(CentreNews $centreNews)
     {
         //
+    }
+
+    function print(CentreNews $centreNews){
+        $centreNews = CentreNews::with('user')->find($centreNews->id);
+       return view('backend.pages.centre-news.print',compact('centreNews'));
     }
 }

@@ -97,7 +97,7 @@ Route::controller(EmployeeController::class)->group(function () {
 
 Route::controller(NewsController::class)->group(function () {
     Route::get('news', 'index')->name('news');
-    Route::get('news/show', 'show')->name('news.show');
+    Route::get('news/show/{news}', 'show')->name('news.show');
     Route::get('news/create', 'create')->name('news.create');
     Route::post('news/store', 'store')->name('news.store');
     Route::get('news/edit/{news}', 'edit')->name('news.edit');
@@ -133,20 +133,35 @@ Route::controller(CentreNewsController::class)->group(function () {
     Route::get('centre/edit/{centreNews}', 'edit')->name('centre.edit');
     Route::post('centre/update/{centreNews}', 'update')->name('centre.update');
     Route::delete('centre/delete/{centreNews}', 'destroy')->name('centre.delete');
+
+
+    Route::get('centre/print/{centreNews}', 'print')->name('centre.print');
+
+
+
 })->middleware(['auth', 'verified']);
 
 
 //here only Sub editors News route
 
 Route::controller(SubEditorController::class)->group(function () {
-    Route::get('sub_editor', 'index')->name('sub_editor');
-    Route::get('centre/show/{subEditor}', 'show')->name('sub_editor.show');
-    Route::get('centre/create', 'create')->name('sub_editor.create');
-    Route::post('centre/store/{subEditor}', 'store')->name('sub_editor.store');
-    Route::post('centre/store/draft/{subEditor}', 'draft_store')->name('sub_editor.store.draft');
-    Route::get('centre/edit/{subEditor}', 'edit')->name('sub_editor.edit');
-    Route::post('centre/update/{subEditor}', 'update')->name('sub_editor.update');
-    Route::delete('centre/delete/{subEditor}', 'destroy')->name('sub_editor.delete');
+    Route::get('reading', 'index')->name('sub_editor');
+    Route::get('reading/show/{subEditor}', 'show')->name('sub_editor.show');
+    Route::get('reading/create', 'create')->name('sub_editor.create');
+    Route::post('reading/store/{subEditor}', 'store')->name('sub_editor.store');
+    Route::post('reading/store/draft/{subEditor}', 'draft_store')->name('sub_editor.store.draft');
+
+    Route::post('sub_editor/store/check/{id}', 'check')->name('sub_editor.store.check');
+
+    Route::get('reading/edit/{subEditor}', 'edit')->name('sub_editor.edit');
+    Route::post('reading/update/{subEditor}', 'update')->name('sub_editor.update');
+    Route::delete('sub_editor/delete/{subEditor}', 'destroy')->name('sub_editor.delete');
+
+    Route::get('reading/mynews/', 'myNews')->name('reading.myNews');
+    Route::get('reading/myRawNews/', 'myRawNews')->name('reading.myRawNews');
+
+  
+
 })->middleware(['auth', 'verified']);
 
 

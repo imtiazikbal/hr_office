@@ -15,11 +15,13 @@
                                 <div class="col text-uppercase ">
                                     <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info text-white"> <strong> My Complete News</strong> </a>
                                 </div>
+
+                            
+
                                 <!-- Button Add Category modal -->
-                                {{-- <div class="ml-auto mr-3">
-                                    <a href="{{ route('news.create') }}" class="btn btn-sm btn-info px-3 rounded-0">Add
-                                        News</a>
-                                </div> --}}
+                                <div class="ml-auto mr-3">
+                                    <a href="{{ route('reading.myRawNews') }}" class="btn btn-sm btn-info px-3 rounded-0">My Raw News</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -38,6 +40,7 @@
 
                                         <th>Title</th>
                                         <th>Reporter</th>
+                                        <th>Checked By</th>
                                         <th>Column No</th>
                                         <th>Page No</th>
                                         <th>status</th>
@@ -55,10 +58,11 @@
                                             </td>
                                             <td>{{ $news->title }}</td>
                                             <td>{{ $news->user->name }}</td>
+                                            <td>{{ auth()->user()->name }}</td>
                                             <td>{{ $news->column_no }}</td>
                                             <td>{{ $news->page_no }}</td>
-                                            <td class="badge  text-center {{ $news->status == 1 ? 'badge-success' : 'badge-info' }}">
-                                                {{ $news->status == 1 ? 'Approved by Centre' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
+                                            <td class="badge  text-center {{ $news->complete == 1 ? 'badge-success' : 'badge-info' }}">
+                                                {{ $news->complete == 1 ? 'Complete' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
                                             </td>
 
 
@@ -72,8 +76,8 @@
                                                         class="btn btn-sm  btn-primary">View</a>
                                                     <a href="{{ route('sub_editor.edit', $news->id) }}" type="button"
                                                         class="btn btn-sm btn-info">Edit</a>
-                                                    <button onclick="deleteData({{ $news->id }})" type="button"
-                                                        class="btn btn-sm btn-danger">Delete</button>
+                                                    {{-- <button onclick="deleteData({{ $news->id }})" type="button"
+                                                        class="btn btn-sm btn-danger">Delete</button> --}}
                                                 </div>
                                             </td>
 

@@ -20,7 +20,7 @@ class NewsController extends Controller
     {
        
 
-      $newses = News::whereDate('created_at', Carbon::today())->where('user_id', auth()->user()->id)->get();
+      $newses = News::whereDate('created_at', Carbon::today())->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
  
         
         
@@ -53,7 +53,8 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        return "ok";
+        return view('backend.pages.news.view', compact('news'));
+
         
     }
 

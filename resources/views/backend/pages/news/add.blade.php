@@ -3,7 +3,7 @@
 @section('content')
     <section class="mt-md-4 pt-md-3">
         <div class="container-fluid">
-            <div class="row" style="color: #444; background-color: #e7e2e2">
+            <div class="row" style="color: #444; background-color: #eeecec">
                 <div class="col-xl-10 col-lg-9 col-md-9 ml-auto">
 
                     <div class="row py-2 ">
@@ -53,7 +53,7 @@
                                             <label for="exampleFormControlTextarea3">
                                                 <strong> News Body : </strong>
                                             </label>
-                                            <textarea name="body" id="body" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
+                                            <textarea name="body" id="summernote" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
                                                 {{ old('body') }}
                                             </textarea> 
                                             {{-- <textarea name="body" id="body" cols="30" rows="10"></textarea> --}}

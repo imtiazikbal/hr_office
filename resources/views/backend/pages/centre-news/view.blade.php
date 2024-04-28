@@ -14,14 +14,100 @@
 
                                     <a href="{{ route('centre.edit', $centreNews->id) }}" type="button"
                                         class="btn btn-sm btn-info">Edit</a>
-                                    
+                                        <a href="{{ route('centre.print', $centreNews->id) }}" type="button" class="btn btn-primary">Print</a>
+
+
+                                    <button onclick="sendReading({{ $centreNews->id }})" type="button"
+                                        class="btn btn-sm btn-info">Send to Reading</button>
+
                                 </div>
                                 <!-- Button Add Category modal -->
+                                <!-- Button trigger modal -->
+                                {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+  </button> --}}
 
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Page No</label>
+                                                        <input type="number" class="form-control" id="page_no"
+                                                            aria-describedby="emailHelp" placeholder="Page No">
+                                                        <small id="emailHelp" class="form-text text-muted">Please write the
+                                                            page number.</small>
+                                                    </div>
+                                                    <input type="hidden" id="id" value="">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Column No</label>
+                                                        <input type="number" class="form-control" id="column_no"
+                                                            placeholder="Column No">
+                                                        <small id="emailHelp" class="form-text text-muted">Please write the
+                                                            Column number.</small>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="button" onclick="submitToReading()"
+                                                            class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    <script>
+                        function sendReading(id) {
+                            //show modal 
+                            $('#exampleModal').modal('show');
+
+                            $('#id').val(id);
+
+                        }
+
+                        function submitToReading() {
+                            let id = $('#id').val();
+                            let page_no = $('#page_no').val();
+                            let column_no = $('#column_no').val();
+                            let forData = {
+                                page_no: page_no,
+                                column_no: column_no
+                            }
+
+
+                            axios.post('/sub_editor/store/check/' + id, forData)
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Successfully sent to reading",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                $('#exampleModal').modal('hide');
+                                window.history.back();
+                                // window.location.reload();
+                            });
+
+
+
+                        }
+                    </script>
 
 
                     <div class="col">
@@ -50,16 +136,17 @@
 
                                 </h6>
                                 <div class="details">
-                                    <img src="{{ asset($centreNews->image) }}" class="card-img-top rounded-0" title="news title"
-                                        alt="">
+                                    <img src="{{ asset($centreNews->image) }}" class="card-img-top rounded-0"
+                                        title="news title" alt="">
                                 </div>
                                 <style>
-                                    .publishdate{
+                                    .publishdate {
                                         font-family: 'solaimanLipi', sans-serif;
                                         font-optical-sizing: auto;
                                         font-weight: bold;
                                         font-style: normal;
                                     }
+
                                     .title-details {
                                         font-family: 'solaimanLipi', sans-serif;
                                         font-optical-sizing: auto;
@@ -93,7 +180,7 @@
                                             </path>
                                             <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
                                         </svg>
-                                        {{ $centreNews->reporter }}
+                                        {{ $centreNews->user->name }}
 
                                 </h5>
 
@@ -122,6 +209,12 @@
     </script>
     <!-- /TinyMCE -->
     </section>
+
+
+
+
+
+
     {{-- <script>
         async function saveDraft() {
                 // Get the values of the elements
@@ -175,7 +268,6 @@
 
 
 
-    
 
 
 

@@ -158,7 +158,7 @@
                             <div>
                                 <a href="saleslist.php" class="nav-link text-white p-2 mb-2 sidebar_link" 
                                     data-toggle="collapse" data-target="#brandcollapse" aria-expanded="true">
-                                    <span class="mnuIcon">&#9780;</span>Sub Editors
+                                    <span class="mnuIcon">&#9780;</span>Reading
                                     <i class="fas fa-angle-down fa-lg float-right pt-1"></i>
                                 </a>
                                 <div id="brandcollapse" class="collapse auto-collapse">
@@ -351,7 +351,12 @@
                                         <a class="dropdown-item" type="button">Activity Log</a>
                                         <a class="dropdown-item" type="button">Settings</a>
                                         <div class="dropdown-divider"></div>
-                                        <a href="?action=logout" class="dropdown-item" >Sign out </a>
+                                   
+                                            <form method="POST" action="{{ route('logout') }}">
+                                                @csrf
+                                                <button class="btn" type="submit">Logout</button>
+                                            </form>
+                                    
                                     </div>
                                 </div>
                             </form>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Models\SubEditor;
 use App\Models\CentreNews;
+use App\Models\Reading;
 use Illuminate\Http\Request;
 
 class SubEditorController extends Controller
@@ -14,7 +15,8 @@ class SubEditorController extends Controller
      */
     public function index()
     {
-       $news = SubEditor::with('user')->get();
+       $news = SubEditor::with('user')->orderBy('id', 'desc')->where('status','!=',4)->get();
+      //  return $news;
        return view('backend.pages.sub-editor.index',compact('news'));
     }
 
@@ -70,7 +72,10 @@ class SubEditorController extends Controller
 
         News::where('id', $centreNews->news_id)->update(['status' => 2]);
         CentreNews::where('id', $centreNews->id)->update(['status' => 2]);
+        $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
+        News::where('id', $centreNews->news_id)
+            ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
         return redirect()->route('sub_editor')->with('success', 'News Send Sub Editor successfully.');
 
 
@@ -90,6 +95,10 @@ class SubEditorController extends Controller
 
         News::where('id', $centreNews->news_id)->update(['status' => 2]);
         CentreNews::where('id', $centreNews->id)->update(['status' => 2]);
+
+        $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
+        News::where('id', $centreNews->news_id)
+        ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
         return redirect()->route('sub_editor')->with('success', 'News Send Sub Editor successfully.');
     }
     }
@@ -99,7 +108,8 @@ class SubEditorController extends Controller
      */
     public function show(SubEditor $subEditor)
     {
-        //
+       //return $subEditor;
+       return view('backend.pages.sub-editor.view',compact('subEditor'));
     }
 
     /**
@@ -107,7 +117,9 @@ class SubEditorController extends Controller
      */
     public function edit(SubEditor $subEditor)
     {
-        //
+        $news = SubEditor::where('id', $subEditor->id)->with('user')->first();
+       // return $news;
+        return view('backend.pages.sub-editor.edit',compact('news'));
     }
 
     /**
@@ -115,14 +127,145 @@ class SubEditorController extends Controller
      */
     public function update(Request $request, SubEditor $subEditor)
     {
-        //
+    
+
+      $validatedData = $request->validate([
+        'title' => ['required', 'string'],
+        'body' => ['required', 'string'],
+        'reporter' => ['required', 'string', 'max:255'],
+        'page_no' => ['required', 'integer'],
+        'column_no' => ['required', 'integer'],
+    ]);
+
+
+    $subEditorNews = SubEditor::find($subEditor->id);
+    $subEditorNewsImage = $subEditorNews->image;
+
+    if ($request->hasFile('image')) {
+        $img = $request->file('image');
+        $t = time();
+        $file_name = $img->getClientOriginalName();
+        $img_name = "{$t}-{$file_name}";
+        $imgUrl = "uploads/subEditor/{$img_name}";
+        // Upload File
+        $img->move(public_path('uploads/subEditor'), $img_name);
+       
+        $subEditor->update([
+           
+            'user_id' => auth()->user()->id,
+
+        ]);
+        Reading::create([
+            'title' => $validatedData['title'],
+            'body' => $validatedData['body'],
+            'comment' => $request->comment,
+            'image' => $imgUrl,
+            'user_id' => auth()->user()->id,
+            'page_no' => $validatedData['page_no'],
+            'column_no' => $validatedData['column_no'],
+            'reporter_id' => $subEditorNews->user_id,
+            'news_id' => $subEditorNews->news_id,
+            'complete' => 1
+        ]);
+
+
+
+        News::where('id',  $subEditorNews->news_id)->update(['status' => 4]);
+        CentreNews::where('id',$subEditorNews->news_id)->update(['status' => 4]);
+        SubEditor::where('news_id',$subEditorNews->news_id)->update(['status' => 4]);
+
+        $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
+
+        News::where('id', $subEditorNews->news_id)
+            ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+
+            return redirect()->route('sub_editor')->with('success', 'Successfully Update and Save.');
+
+
+    } else {
+        $subEditor->update([
+           
+            'user_id' => auth()->user()->id,
+
+        ]);
+        Reading::create([
+            'title' => $validatedData['title'],
+            'body' => $validatedData['body'],
+            'comment' => $request->comment,
+            'image' => $subEditorNewsImage,
+            'user_id' => auth()->user()->id,
+            'page_no' => $validatedData['page_no'],
+            'column_no' => $validatedData['column_no'],
+            'reporter_id' => $subEditorNews->user_id,
+            'news_id' => $subEditorNews->news_id,
+            'complete' => 1
+        ]);
+
+        News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
+        CentreNews::where('id', $subEditorNews->id)->update(['status' => 4]);
+        SubEditor::where('news_id',$subEditorNews->news_id)->update(['status' => 4]);
+
+         
+        $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
+
+        News::where('id', $subEditorNews->news_id)
+            ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+
+        return redirect()->route('sub_editor')->with('success', 'Successfully Update and Save.');
+    }
+       
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SubEditor $subEditor)
-    {
-        //
+    function check(Request $request, $id){
+
+
+       
+      
+        $validatedData = $request->validate([
+            'page_no' => ['required', 'integer'],
+            'column_no' => ['required', 'integer'],
+        ]);
+        $centreNews = CentreNews::find($id);
+        SubEditor::create([
+                'title' => $centreNews->title,
+                'body' => $centreNews->body,
+                'comment' => $request->comment,
+                'image' => $centreNews->image,
+                'user_id' => auth()->user()->id,
+                'page_no' => $validatedData['page_no'],
+                'column_no' => $validatedData['column_no'],
+                'reporter_id' => $centreNews->user_id,
+                'news_id' => $centreNews->news_id,
+            ]);
+    
+            News::where('id', $centreNews->news_id)->update(['status' => 3]);
+            CentreNews::where('id', $centreNews->id)->update(['status' => 3]);
+
+            return response('yes', 200);
+    
+           // return redirect()->route('sub_editor')->with('success', 'News Send Sub Editor successfully.');
+    
+        } 
+
+        // my news 
+        function myNews(){
+
+
+
+        $news =  Reading::where('user_id',auth()->user()->id)->get();
+       return view('backend.pages.reading.index',compact('news'));
+            
+        }
+
+        function myRawNews(){
+
+
+
+            $news =  SubEditor::where('user_id',auth()->user()->id)->where('status','=',4)->get();
+            //return $news;
+           return view('backend.pages.reading.rawNews',compact('news'));
+                
+            }
+
+
     }
-}

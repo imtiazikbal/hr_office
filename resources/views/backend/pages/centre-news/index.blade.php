@@ -63,9 +63,9 @@
 
                                             <td>
                                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                    <a href="" type="button" class="btn btn-sm  btn-primary">Send to
-                                                        Sub Editor</a>
-
+                                                    <button onclick="sendReading({{ $news->id }})" type="button"
+                                                        class="btn btn-sm btn-primary">Send to Reading</button>
+                
 
                                                 </div>
                                             </td>
@@ -74,8 +74,10 @@
                                             <td>
 
                                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                    <a href="{{ url('centre/show/' . $news->id) }}" type="button"
-                                                        class="btn btn-sm  btn-primary">View</a>
+                                                    <a href="{{ route('centre.print', $news->id) }}" type="button"
+                                                        class="btn btn-sm  btn-info">Print</a>
+                                                        <a href="{{ url('centre/show/' . $news->id) }}" type="button"
+                                                            class="btn btn-sm  btn-primary">View</a>
                                                     {{-- <a href="{{ route('news.edit', $news->id) }}" type="button"
                                                         class="btn btn-sm btn-info">Edit</a> --}}
                                                     <button onclick="deleteData({{ $news->id }})" type="button"
@@ -93,10 +95,85 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="exampleModalLabel">Please write carefully</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Page No</label>
+                            <input type="number" class="form-control" id="page_no"
+                                aria-describedby="emailHelp" placeholder="Page No">
+                            <small id="emailHelp" class="form-text text-muted">Please write the
+                                page number.</small>
+                        </div>
+                        <input type="hidden" id="id" value="">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Column No</label>
+                            <input type="number" class="form-control" id="column_no"
+                                placeholder="Column No">
+                            <small id="emailHelp" class="form-text text-muted">Please write the
+                                Column number.</small>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Close</button>
+                            <button type="button" onclick="submitToReading()"
+                                class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     </section>
 
 
     <script>
+        function sendReading(id) {
+                            //show modal 
+                            $('#exampleModal').modal('show');
+
+                            $('#id').val(id);
+
+                        }
+
+                        function submitToReading() {
+                            let id = $('#id').val();
+                            let page_no = $('#page_no').val();
+                            let column_no = $('#column_no').val();
+                            let forData = {
+                                page_no: page_no,
+                                column_no: column_no
+                            }
+
+
+                            axios.post('/sub_editor/store/check/' + id, forData)
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Successfully sent to reading",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                $('#exampleModal').modal('hide');
+                               
+                                window.location.reload();
+                            });
+
+
+
+                        }
         async function deleteData(id) {
 
             Swal.fire({

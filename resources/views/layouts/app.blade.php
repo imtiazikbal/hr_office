@@ -46,6 +46,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css" />
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
 
+    {{-- summer note --}}
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <title>Admin Panel</title>
 </head>
 
@@ -64,7 +67,7 @@
     @yield('content')
 
     <!-- Footer Section 2 Start -->
-    
+
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
@@ -88,6 +91,12 @@
             $('#example').DataTable();
         });
     </script>
+    <script>
+        $('#summernote').summernote({
+          tabsize: 3,
+          height: 700
+        });
+      </script>
 
     <!-- Your custom CKEDITOR setup -->
     <!-- <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>

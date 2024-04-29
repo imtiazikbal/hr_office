@@ -10,11 +10,9 @@
                         <div class="col">
                             <div class="row shadow-sm text-muted">
                                 <div class="col text-uppercase ">
-                                    <h5> <strong> Todays All News(From Center) </strong> </h5>
+                                    <h5> <strong>My Todays Complete News</strong> </h5>
                                 </div>
-                                <div class="col text-uppercase ">
-                                    <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info text-white"> <strong> My Complete News</strong> </a>
-                                </div>
+                                
 
                             
 
@@ -32,60 +30,156 @@
 
                     <div class="row">
                         <div class="col">
-                            <table id="example" class="table table-sm table-striped table-bordered" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th width="5%">SL</th>
-                                        <th>Image</th>
+                            <div class="row">
+                                <div class="col-md-8">  
+                                    <form action="">
 
-                                        <th>Title</th>
-                                        <th>Reporter</th>
-                                        <th>Checked By</th>
-                                        <th>Column No</th>
-                                        <th>Page No</th>
-                                        <th>status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody class="" style="font-size:0.9em;">
-                                    @foreach ($news as $news)
-                                        <tr>
-
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>
-                                                <img src="{{ asset($news->image) }}" width="50px" alt="">
-                                            </td>
-                                            <td>{{ $news->title }}</td>
-                                            <td>{{ $news->user->name }}</td>
-                                            <td>{{ auth()->user()->name }}</td>
-                                            <td>{{ $news->column_no }}</td>
-                                            <td>{{ $news->page_no }}</td>
-                                            <td class="badge  text-center {{ $news->complete == 1 ? 'badge-success' : 'badge-info' }}">
-                                                {{ $news->complete == 1 ? 'Complete' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
-                                            </td>
-
-
-
-
-
-                                            <td>
-
-                                                <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                    <a href="{{ route('sub_editor.show', $news->id) }}" type="button"
-                                                        class="btn btn-sm  btn-primary">View</a>
-                                                    <a href="{{ route('sub_editor.edit', $news->id) }}" type="button"
-                                                        class="btn btn-sm btn-info">Edit</a>
-                                                    {{-- <button onclick="deleteData({{ $news->id }})" type="button"
-                                                        class="btn btn-sm btn-danger">Delete</button> --}}
+                                        <div class="row">                       
+                                            <div class="col-md-6 col-sm-6">
+                                                <label>Show
+                                                    <select name="datatable_length" class="form-control input-sm">
+                                                        <option value="1">1</option>
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                    entries</label> 
+                                            </div>
+                                       <div class="col-md-6 col-sm-6">
+                                                <div class="filter-search-box text-right">
+                                                    <label>Search:<input type="search"
+                                                            class="form-control input-sm" placeholder=""></label>
                                                 </div>
-                                            </td>
-
+                                            </div> 
+                                       
+                                        </div>
+                                    </form>
+                                <table id="" class="table table-sm table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">SL</th>
+                                            <th>Image</th>
+    
+                                            <th>Title</th>
+                                            <th>Reporter</th>
+                                            <th>Checked By</th>
+                                            <th>Column No</th>
+                                            <th>Page No</th>
+                                            <th>status</th>
+                                            <th>Actions</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
+                                    </thead>
+    
+                                    <tbody class="" style="font-size:0.9em;">
+                                        @foreach ($newses as $news)
+                                            <tr>
+    
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>
+                                                    <img src="{{ asset($news->image) }}" width="50px" alt="">
+                                                </td>
+                                                <td>{{ $news->title }}</td>
+                                                <td>{{ $news->reporter->name }}</td>
+                                                <td>{{ auth()->user()->name }}</td>
+                                                <td>{{ $news->column_no }}</td>
+                                                <td>{{ $news->page_no }}</td>
+                                                <td class="badge  text-center {{ $news->complete == 1 ? 'badge-success' : 'badge-info' }}">
+                                                    {{ $news->complete == 1 ? 'Complete' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
+                                                </td>
+    
+    
+    
+    
+    
+                                                <td>
+    
+                                                    <div class="btn-group btn-block" role="group" aria-label="Basic example">
+                                                        <a href="{{ route('sub_editor.show', $news->id) }}" type="button"
+                                                            class="btn btn-sm  btn-primary">View</a>
+                                                        <a href="{{ route('sub_editor.edit', $news->id) }}" type="button"
+                                                            class="btn btn-sm btn-info">Edit</a>
+                                                        {{-- <button onclick="deleteData({{ $news->id }})" type="button"
+                                                            class="btn btn-sm btn-danger">Delete</button> --}}
+                                                    </div>
+                                                </td>
+    
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    {{ $newses->links() }}
+                                </table>
+                              
+                            
+                            </div>
+                                <div class="col-md-4">
+                                    <form action="">
 
-                            </table>
+                                        <div class="row">                       
+                                            <div class="col-md-6 col-sm-6">
+                                                <label>Show
+                                                    <select name="datatable_length" class="form-control input-sm">
+                                                        <option value="1">1</option>
+                                                        <option value="5">5</option>
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                    entries</label> 
+                                            </div>
+                                       <div class="col-md-6 col-sm-6">
+                                                <div class="filter-search-box text-right">
+                                                    <label>Search:<input type="search"
+                                                            class="form-control input-sm" placeholder=""></label>
+                                                </div>
+                                            </div> 
+                                       
+                                        </div>
+                                    </form>
+                                    <div class="row">
+                                        <div class="col">
+                                            <table  class="table table-sm table-striped table-bordered" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="5%">SL</th>
+                                                   
+                
+                                                        <th>Title</th>
+                                                        <th>Reporter</th>
+                                                        <th>Complete Date</th>
+                                                      
+                                                       
+                                                    </tr>
+                                                </thead>
+                
+                                                <tbody class="" style="font-size:0.9em;">
+                                                   @foreach ($allNews as $news )
+                                                       <tr>
+                                                        <td>
+                                                            {{ $loop->iteration }}
+                                                        </td>
+                                                        <td>
+                                                            {{ Str::limit($news->title, 20) }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $news->reporter->name }}
+                                                        </td>
+                                                        <td>
+                                                            {{ date('d F Y', strtotime($news->created_at)) }}
+                                                        </td>
+                                                       </tr>
+                                                   @endforeach
+                                                </tbody>
+                                             
+                
+                                            </table>
+                                   
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Models\SubEditor;
 use App\Models\CentreNews;
+use App\Models\RawNews;
 use App\Models\Reading;
 use Illuminate\Http\Request;
 
@@ -13,11 +14,24 @@ class SubEditorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-       $news = SubEditor::with('user')->orderBy('id', 'desc')->where('status','!=',4)->get();
-      //  return $news;
-       return view('backend.pages.sub-editor.index',compact('news'));
+        $newses = SubEditor::query();
+
+        // Filter by search query if provided
+        if ($request->has('search')) {
+            $newses->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+    
+        // Paginate the results
+        $newses = $newses->with('user')
+                         ->orderBy('id', 'desc')
+                         ->where('status', '!=', 4)
+                         ->with('track')
+                         ->paginate($request->input('datatable_length', 10));
+    
+        return view('backend.pages.sub-editor.index', compact('newses'));
+       // return $news;
     }
 
     /**
@@ -75,7 +89,8 @@ class SubEditorController extends Controller
         $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
         News::where('id', $centreNews->news_id)
-            ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+            ->update(['logs' => auth()->user()->id ,
+            'updated_at' => $currentDateTime]);
         return redirect()->route('sub_editor')->with('success', 'News Send Sub Editor successfully.');
 
 
@@ -98,7 +113,8 @@ class SubEditorController extends Controller
 
         $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
         News::where('id', $centreNews->news_id)
-        ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+        ->update(['logs' => auth()->user()->id,
+        'updated_at' => $currentDateTime]);
         return redirect()->route('sub_editor')->with('success', 'News Send Sub Editor successfully.');
     }
     }
@@ -153,8 +169,28 @@ class SubEditorController extends Controller
         $subEditor->update([
            
             'user_id' => auth()->user()->id,
+            'track_id' => null,
 
         ]);
+
+        // here create raw news
+
+        RawNews::create([
+            'title' => $subEditorNews->title,
+            'body' =>$subEditorNews->body,
+            'comment' => $subEditorNews->comment,
+            'image' => $subEditorNews->image,
+            'user_id' => $subEditorNews->auth()->user()->id,
+            'page_no' => $subEditorNews->page_no,
+            'column_no' => $subEditorNews->column_no,
+            'reporter_id' => $subEditorNews->reporter_id,
+            'news_id' => $subEditorNews->news_id,
+            'complete' => 1
+        ]);
+
+
+
+  // here create update news
         Reading::create([
             'title' => $validatedData['title'],
             'body' => $validatedData['body'],
@@ -163,7 +199,7 @@ class SubEditorController extends Controller
             'user_id' => auth()->user()->id,
             'page_no' => $validatedData['page_no'],
             'column_no' => $validatedData['column_no'],
-            'reporter_id' => $subEditorNews->user_id,
+            'reporter_id' => $subEditorNews->reporter_id,
             'news_id' => $subEditorNews->news_id,
             'complete' => 1
         ]);
@@ -177,17 +213,35 @@ class SubEditorController extends Controller
         $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
         News::where('id', $subEditorNews->news_id)
-            ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+            ->update(['logs' => auth()->user()->id,
+            'updated_at' => $currentDateTime]);
 
             return redirect()->route('sub_editor')->with('success', 'Successfully Update and Save.');
 
 
     } else {
         $subEditor->update([
-           
+        
             'user_id' => auth()->user()->id,
-
+            'track_id' => null,
         ]);
+
+// here create raw news
+
+        RawNews::create([
+            'title' => $subEditorNews->title,
+            'body' =>$subEditorNews->body,
+            'comment' => $subEditorNews->comment,
+            'image' => $subEditorNews->image,
+            'user_id' => auth()->user()->id,
+            'page_no' => $subEditorNews->page_no,
+            'column_no' => $subEditorNews->column_no,
+            'reporter_id' => $subEditorNews->reporter_id,
+            'news_id' => $subEditorNews->news_id,
+            'complete' => 1
+        ]);
+// here create update news
+
         Reading::create([
             'title' => $validatedData['title'],
             'body' => $validatedData['body'],
@@ -209,7 +263,8 @@ class SubEditorController extends Controller
         $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
         News::where('id', $subEditorNews->news_id)
-            ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+            ->update(['logs' => auth()->user()->id
+            ,'updated_at' => $currentDateTime]);
 
         return redirect()->route('sub_editor')->with('success', 'Successfully Update and Save.');
     }
@@ -247,24 +302,27 @@ class SubEditorController extends Controller
     
         } 
 
-        // my news 
-        function myNews(){
+       
+      
 
 
+            function tracking(Request $request, $id){
+              try{
+                SubEditor::where('id',$id)->update([
+                    'track_id' => auth()->user()->id
+                ]);
+                return response('yes', 200);
+              }catch(\Exception $e){
+                return response($e->getMessage(), 500);
+              }
+            }
 
-        $news =  Reading::where('user_id',auth()->user()->id)->get();
-       return view('backend.pages.reading.index',compact('news'));
-            
-        }
+            function cancelTrack(Request $request, $id){
 
-        function myRawNews(){
-
-
-
-            $news =  SubEditor::where('user_id',auth()->user()->id)->where('status','=',4)->get();
-            //return $news;
-           return view('backend.pages.reading.rawNews',compact('news'));
-                
+                SubEditor::where('id',$id)->update([
+                    'track_id' => null
+                ]);
+               return redirect()->route('sub_editor')->with('success', 'Successfully Back Reading Central.');
             }
 
 

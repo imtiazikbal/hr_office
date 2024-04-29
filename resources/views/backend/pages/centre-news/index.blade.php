@@ -30,10 +30,33 @@
                     </div>
 
                     <!--Input Group Start-->
+                    <form action="">
 
+                        <div class="row">                       
+                            <div class="col-md-6 col-sm-6">
+                                <label>Show
+                                    <select name="datatable_length" class="form-control input-sm">
+                                        <option value="1">1</option>
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                    entries</label> 
+                            </div>
+                       <div class="col-md-6 col-sm-6">
+                                <div class="filter-search-box text-right">
+                                    <label>Search:<input type="search"
+                                            class="form-control input-sm" placeholder=""></label>
+                                </div>
+                            </div> 
+                       
+                        </div>
+                    </form>
                     <div class="row">
                         <div class="col">
-                            <table id="example" class="table table-sm table-striped table-bordered" style="width:100%">
+                            <table  class="table table-sm table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th width="5%">SL</th>

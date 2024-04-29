@@ -11,19 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->unsignedBigInteger('logs')->nullable();
-            $table->foreign('logs')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('sub_editors', function (Blueprint $table) {
+            $table->unsignedBigInteger('track_id')->nullable();
+            $table->foreign('track_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->dropColumn('logs');
+        Schema::table('sub_editors', function (Blueprint $table) {
+            $table->dropColumn('track_id');
         });
     }
 };

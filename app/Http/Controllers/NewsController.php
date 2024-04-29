@@ -20,13 +20,13 @@ class NewsController extends Controller
     {
        
 
-      $newses = News::whereDate('created_at', Carbon::today())->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
+      $newses = News::whereDate('created_at', Carbon::today())->where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->with('log','user')->get();
  
         
-        
+      // return $newses;
 
         // Pass the chief reporter names and news articles to the view
-        return view('backend.pages.news.index', compact('newses'));
+     return view('backend.pages.news.index', compact('newses'));
     }
 
     /**

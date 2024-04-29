@@ -9,18 +9,21 @@
                     <div class="row py-2 ">
                         <div class="col">
                             <div class="row shadow-sm text-muted">
-                               
-                         
+
+
                                 <div class="ml-auto mr-3">
-                                    <a href="{{ route('sub_editor') }}" class="btn btn-sm btn-info px-3 rounded-0">Centre News</a>
+                                    <a href="{{ route('sub_editor') }}" class="btn btn-sm btn-info px-3 rounded-0">Centre
+                                        News</a>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
 
                     <!--Input Group Start-->
-                
-                    <form action="{{ route('sub_editor.update', $news->id) }}" method="POST" id="save-form" enctype="multipart/form-data">
+
+                    <form action="{{ route('sub_editor.update', $news->id) }}" method="POST" id="save-form"
+                        enctype="multipart/form-data">
                         <div class="row pt-md-4">
                             <div class="col-md-9 px-sm-5">
 
@@ -37,7 +40,7 @@
 
                                 <div class="form-group row ">
                                     <div class="col-sm-12">
-                                        <input type="text" name="comment" id="comment" value="{{$news->comment }}"
+                                        <input type="text" name="comment" id="comment" value="{{ $news->comment }}"
                                             class="form-control form-control-sm border-0" id="colFormLabel"
                                             placeholder="মন্তব্য (Not Required)">
                                     </div>
@@ -52,7 +55,7 @@
                                             </label>
                                             <textarea name="body" id="summernote" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
                                                {!! $news->body !!}
-                                            </textarea> 
+                                            </textarea>
                                             {{-- <textarea name="body" id="body" cols="30" rows="10"></textarea> --}}
                                             <style type="text/css">
                                                 #mce_0_toolbar2 {
@@ -75,33 +78,40 @@
 
                             <div class="col-md-3">
                                 <div class="row">
-                                    <div class="col-md-6"> <div class="form-group row">
-                                        {{-- <label for="exampleFormControlTextarea3">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            {{-- <label for="exampleFormControlTextarea3">
                                             <strong>Page No:</strong>
                                         </label> --}}
-                                        <div class="col-sm-12">
-                                            <input type="text" {{ auth()->user()->role !== "0" ? 'readonly' : '' }} name="page_no" id="title" value="{{ $news->page_no }}"
-                                                id="colFormLabel" class="form-control bg-gray form-control-sm form_check_color_right"
-                                                placeholder="Page No" required>
+                                            <div class="col-sm-12">
+                                                <input type="text" {{ auth()->user()->role !== '0' ? 'readonly' : '' }}
+                                                    name="page_no" id="title" value="{{ $news->page_no }}"
+                                                    id="colFormLabel"
+                                                    class="form-control bg-gray form-control-sm form_check_color_right"
+                                                    placeholder="Page No" required>
+                                            </div>
+                                            @if ($errors->has('title'))
+                                                <div class="error mt-2 text-danger">{{ $errors->first('title') }}</div>
+                                            @endif
                                         </div>
-                                        @if ($errors->has('title'))
-                                            <div class="error mt-2 text-danger">{{ $errors->first('title') }}</div>
-                                        @endif
                                     </div>
-                                </div>
-                                    <div class="col-md-6"> <div class="form-group row">
-                                        {{-- <label for="formControlSelect1">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            {{-- <label for="formControlSelect1">
                                             <strong>Colmun No: </strong>
                                         </label> --}}
-                                        <div class="col-sm-12">
-                                            <input type="text" {{ auth()->user()->role !== "0" ? 'readonly' : '' }} name="column_no" id="title" value="{{ $news->column_no }}"
-                                                id="colFormLabel" class="form-control form-control-sm form_check_color_right"
-                                                placeholder="Column No" required>
+                                            <div class="col-sm-12">
+                                                <input type="text" {{ auth()->user()->role !== '0' ? 'readonly' : '' }}
+                                                    name="column_no" id="title" value="{{ $news->column_no }}"
+                                                    id="colFormLabel"
+                                                    class="form-control form-control-sm form_check_color_right"
+                                                    placeholder="Column No" required>
+                                            </div>
+                                            @if ($errors->has('title'))
+                                                <div class="error mt-2 text-danger">{{ $errors->first('title') }}</div>
+                                            @endif
                                         </div>
-                                        @if ($errors->has('title'))
-                                            <div class="error mt-2 text-danger">{{ $errors->first('title') }}</div>
-                                        @endif
-                                    </div></div>
+                                    </div>
                                 </div>
 
                                 {{-- <div class="form-group row">
@@ -150,6 +160,8 @@
                                         </div>
 
                                     </div>
+
+                                    
                                     <script>
                                         /*show image script */
                                         function showMyImage(fileInput) {
@@ -180,23 +192,24 @@
                                             <strong> Reporter Name : </strong>
                                         </label>
                                         <div class="col-sm-7">
-                                           
-                                                <input type="text" name="reporter" id="reporter"
-                                                    class="form-control form-control-sm" id="colFormLabel" readonly
-                                                    value="{{ $news->user->name }}">
-                                           
+
+                                            <input type="text" name="reporter" id="reporter"
+                                                class="form-control form-control-sm" id="colFormLabel" readonly
+                                                value="{{ $news->user->name }}">
+
 
                                         </div>
                                     </div>
                                 </div>
 
 
-                                <input type="hidden" name="news_id" value="{{ $news->news_id}}">
+                                <input type="hidden" name="news_id" value="{{ $news->news_id }}">
 
                                 <div class="row mb-5">
                                     <div class="col text-right">
-                                        {{-- <button type="button" onclick="submitToDraft()"
-                                            class="btn btn-block btn-success py-4 shadow">Update to Draft</button> --}}
+                                        <button type="button" onclick="submitToDraft()"
+                                            class="btn btn-block btn-success py-4 shadow">Back</button>
+
                                         <button type="button" onclick="submitToCentral()"
                                             class="btn btn-block btn-primary py-4 shadow">Complete and Save</button>
                                     </div>
@@ -210,18 +223,25 @@
                 </div>
             </div>
         </div>
+
         <script>
-          
+            function submitToDraft() {
+                // Set the form action to the draft route
+                document.getElementById('save-form').action = "{{ url('cancel/track/' . $news->id) }}";
+                // Submit the form
+                document.getElementById('save-form').submit();
+            }
+
             function submitToCentral() {
                 // Set the form action to the central route
-                document.getElementById('save-form').action = "{{ url('reading/update/'.$news->id) }}";
+                document.getElementById('save-form').action = "{{ url('reading/update/' . $news->id) }}";
                 // Submit the form
                 document.getElementById('save-form').submit();
             }
         </script>
 
         <!-- Load TinyMCE -->
-       <script src="{{ asset('assets') }}/js/tiny-mce/jquery.tinymce.js" type="text/javascript"></script>
+        <script src="{{ asset('assets') }}/js/tiny-mce/jquery.tinymce.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 setupTinyMCE();
@@ -277,9 +297,28 @@
 
 
 
+    <script>
+        // Disable back button
+        history.pushState(null, null, document.URL);
+window.addEventListener('popstate', function () {
+    history.pushState(null, null, document.URL);
+});
 
+    </script>
+    
 
+    <script>
+        // Check if the browser is Chrome
+        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
+        if (isChrome) {
+            // Disable back button for Chrome
+            history.pushState(null, null, document.URL);
+            window.addEventListener('popstate', function () {
+                history.pushState(null, null, document.URL);
+            });
+        }
+    </script>
 
 
 
@@ -338,10 +377,4 @@
             })()
         </script>
     @endif>
-
-
-
-
-
-
 @endsection

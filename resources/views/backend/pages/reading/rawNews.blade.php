@@ -10,7 +10,7 @@
                         <div class="col">
                             <div class="row shadow-sm text-muted">
                                 <div class="col text-uppercase ">
-                                    <h5> <strong> Todays All News(From Center) </strong> </h5>
+                                    <h5> <strong>My Todays Raw News News</strong> </h5>
                                 </div>
                                 <div class="col text-uppercase ">
                                     <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info text-white"> <strong> My Complete News</strong> </a>
@@ -57,7 +57,7 @@
                                                 <img src="{{ asset($news->image) }}" width="50px" alt="">
                                             </td>
                                             <td>{{ $news->title }}</td>
-                                            <td>{{ $news->user->name }}</td>
+                                            <td>{{ $news->reporter->name }}</td>
                                             <td>{{ auth()->user()->name }}</td>
                                             <td>{{ $news->column_no }}</td>
                                             <td>{{ $news->page_no }}</td>

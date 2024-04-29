@@ -12,9 +12,27 @@ class CentreNewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $centreNewses = CentreNews::with('user')->where('status', '=', 0)->get();
+
+
+        $centreNewses = CentreNews::query();
+
+        // Filter by search query if provided
+        if ($request->has('search')) {
+            $centreNewses->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+    
+        // Paginate the results
+        $centreNewses = $centreNewses->with('user')
+                         ->orderBy('id', 'desc')
+                         ->where('status', '=', 0)
+                         ->with('user')
+                         ->paginate($request->input('datatable_length', 10));
+
+
+
+  
         // return $centreNewses;
         return view('backend.pages.centre-news.index', compact('centreNewses'));
     }
@@ -200,7 +218,7 @@ class CentreNewsController extends Controller
             $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
             News::where('id', $centreNews->news_id)
-                ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+            ->update(['logs' => auth()->user()->id]);
             return redirect('centre')->with('success', 'News Updated Central News successfully.');
         } else {
             $centreNews->update([
@@ -213,7 +231,10 @@ class CentreNewsController extends Controller
             $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
             News::where('id', $centreNews->news_id)
-                ->update(['logs' => auth()->user()->name . ' ' . $currentDateTime]);
+                ->update(
+                    ['logs' => auth()->user()->id,
+                    'updated_at' => $currentDateTime
+                ]);
             return redirect('centre')->with('success', 'News Updated Central News successfully.');
         }
     }

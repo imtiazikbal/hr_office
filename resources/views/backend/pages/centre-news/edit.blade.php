@@ -215,7 +215,7 @@
         
             function submitToCentral() {
                 // Set the form action to the central route
-                document.getElementById('save-form').action = "{{ url('sub_editor/store/'.$centreNews->id) }}";
+                document.getElementById('save-form').action = "{{ url('reading/store/'.$centreNews->id) }}";
                 // Submit the form
                 document.getElementById('save-form').submit();
             }

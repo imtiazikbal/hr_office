@@ -20,7 +20,18 @@ public function reading(){
     
 }
 
+public function news(){
+    return $this->hasMany(News::class);   
+}
 
+public function track(){
+    return $this->hasMany(SubEditor::class,'track_id');
+    
+}
+public function user(){
+
+    return $this->hasMany(RawNews::class);   
+}
 
     /**
      * The attributes that are mass assignable.

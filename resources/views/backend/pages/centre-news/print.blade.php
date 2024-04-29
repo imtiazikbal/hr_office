@@ -34,7 +34,8 @@
             </div>
             <hr>
             <hr>
-
+      
+              
             <div class="newDeatils">
                 <h2 class="font-weight-bold">{{ $centreNews->title }}</h2>
                 <h6 class="pb-1" style="color: #999999;">

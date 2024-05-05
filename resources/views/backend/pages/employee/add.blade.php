@@ -105,17 +105,14 @@
                                         </strong></label>
 
                                     <div class="col-sm-8">
-                                        @if (Auth()->user()->role == 0 || Auth()->user()->role == 1)
+                                        @if (Auth()->user()->hasRole('super-admin'))
                                             <select class="custom-select form_check_color_right" id="role"
                                                 name="role" value="{{ old('role') }}" required>
                                                 <option value="">Select Role</option>
-                                                <option value="0">SuperAdmin</option>
-                                                <option value="2">Hr.Admin</option>
-                                                <option value="5">Reading</option>
-                                                <option value="6">Reporting</option>
-                                                <option value="3">Cheif Editor</option>
-                                                <option value="4">Sub Editor</option>
-                                                <option value="7">graphics</option>
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                    
+                                                @endforeach
                                             </select>
                                         @else
                                             <select class="custom-select form_check_color_right" id="role"
@@ -124,11 +121,10 @@
 
 
                                                 {{-- <option value="2">Hr.Admin</option> --}}
-                                                <option value="5">Reading</option>
-                                                <option value="6">Reporting</option>
-                                                <option value="3">Cheif Editor</option>
-                                                <option value="4">Sub Editor</option>
-                                                <option value="7">graphics</option>
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                    
+                                                @endforeach
                                             </select>
                                         @endif
                                     </div>

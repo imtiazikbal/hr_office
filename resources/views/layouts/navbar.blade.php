@@ -160,28 +160,28 @@
 
                             </div>
                         </li>
-                        {{-- <li class="nav-item"> 
+                    <li class="nav-item"> 
                             <div>
                                 <a href="supplier.php" class="nav-link text-white p-2 mb-2 sidebar_link" 
                                     data-toggle="collapse" data-target="#suppliercollapse" aria-expanded="true">
-                                    <span class="mnuIcon">&#9780;</span>Supplier Manage
+                                    <span class="mnuIcon">&#9780;</span>Role
                                     <i class="fas fa-angle-down fa-lg float-right pt-1"></i>
                                 </a>
                                 <div id="suppliercollapse" class="collapse auto-collapse">
                                       <div class="card-body p-0">
                                         <ul class="nav-item pl-3 dropdownMenuItem">
-                                            <a href="supplierlist.php" class="nav-link py-1">
-                                                <i class="fas fa-box-open pt-1 mr-2"></i>Supplier List
+                                            <a href="{{ route('role') }}" class="nav-link py-1">
+                                                <i class="fas fa-box-open pt-1 mr-2"></i>Role List
                                             </a>
-                                            <a href="supplieradd.php" class="nav-link py-1">
-                                                <i class="fas fa-box pt-1 mr-2"></i> Add Supplier
+                                            <a href="{{ route('permission') }}" class="nav-link py-1">
+                                                <i class="fas fa-box pt-1 mr-2"></i> Permission List
                                             </a>
                                         </ul>
                                     </div> 
                                 </div>
 
                             </div>
-                        </li> --}}
+                        </li> 
                         {{-- <li class="nav-item"> 
                             <div>
                                 <a href="saleslist.php" class="nav-link text-white p-2 mb-2 sidebar_link" 
@@ -335,16 +335,23 @@
                                 </style>
 
                                 <div class="dropdown">
-                                    <button type="button" class="btn dropdown-toggle drophvr"data-toggle="dropdown"
-                                        data-display="static" aria-haspopup="true" aria-expanded="false"> <img
-                                            src="{{ asset('assets') }}/img/usericon.png" width="22"
-                                            class="image-fluid"> Admin user
+                                    <button type="button" class="btn dropdown-toggle d-flex align-items-center text-white drophvr"data-toggle="dropdown"
+                                        data-display="static" aria-haspopup="true" aria-expanded="false"> 
+                                        <img id="profilePhoto"
+                                            src="" width="22"
+                                            class="image-fluid rounded-circle">
+                                            
+                                            @if (Auth::check())
+                                            {{ Auth::user()->name }}
+                                            @endif
+
+
                                     </button>
 
 
                                     <div class="dropdown-menu mt-0 dropdown-menu-right"
                                         style="width: 200px; z-index: 0;">
-                                        <a href="profile.php" class="dropdown-item" type="button">Profile</a>
+                                        <a href="{{ route('profile') }}" class="dropdown-item" type="button">Profile</a>
 
                                         <!-- Settings Dropdown -->
 
@@ -384,6 +391,18 @@
             /* Add more styles as needed to highlight the active item */
         }
     </style>
+
+
+<script>
+    profilePhoto();
+   async function profilePhoto(){
+        axios.get('/profilePhoto').then(function(response){
+         let img = document.getElementById('profilePhoto');
+         img.src = response.data;
+
+        })
+    }
+</script>
     {{-- <script>
         //auto collapse Script
         $(function() {

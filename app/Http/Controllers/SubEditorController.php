@@ -30,16 +30,31 @@ class SubEditorController extends Controller
                          ->with('track')
                          ->paginate($request->input('datatable_length', 10));
     
-        return view('backend.pages.sub-editor.index', compact('newses'));
-       // return $news;
+
+
+                      // return $newses;
+                         return view('backend.pages.sub-editor.test', compact('newses'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function returnData(Request $request)
     {
-        //
+        $newses = SubEditor::query();
+
+      
+    
+        // Paginate the results
+        $newses = $newses->with('user')
+                         ->orderBy('id', 'desc')
+                         ->where('status', '!=', 4)
+                         ->with('track')->get();
+                        
+    
+
+
+                     return $newses;
     }
 
     /**

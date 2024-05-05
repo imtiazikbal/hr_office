@@ -1,18 +1,27 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Permission;
+use App\Models\EmployeeDetails;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReadingController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\DraftNewsController;
 use App\Http\Controllers\SubEditorController;
+use App\Http\Controllers\AssignRolePermission;
+use App\Http\Controllers\AssignRolePermissionController;
 use App\Http\Controllers\CentreNewsController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\EmployeeDetailsController;
+use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ReadingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,11 +56,14 @@ Route::get('/dashboard', function () {
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+
+
 
 Route::get('logout01', function () {
     auth()->logout();
@@ -59,6 +71,103 @@ Route::get('logout01', function () {
 });
 
 // Here Only Department Route
+
+
+Route::get('checkRole', function () {
+   // $user = auth()->user();
+    // $role= Role::where('slug','editor')->first();
+    // $user->roles()->attach($role);
+
+    //dd($user->hasRole('editor'));
+
+    // $permissions = Permission::first();
+    // $user->permissions()->attach($permissions);
+
+    return "Done";
+
+   
+   
+});
+Route::group(['middleware'=>['auth','role:editor']],function(){
+    Route::get('canRole',function(){
+        dd('hi');
+    });
+});
+
+
+
+//role route 
+Route::controller(RoleController::class)
+    ->group(function () {
+        Route::get('role', 'index')->name('role');
+        Route::get('role/show', 'show')->name('role.show');
+        Route::get('role/create', 'create')->name('role.create');
+        Route::post('role/store', 'store')->name('role.store');
+        Route::get('role/edit/{role}', 'edit')->name('role.edit');
+        Route::post('role/update/{role}', 'update')->name('role.update');
+        Route::delete('role/delete/{role}', 'destroy')->name('role.delete');
+    })
+    ->middleware(['auth', 'verified']);
+
+
+//permission Route
+
+Route::controller(PermissionController::class)
+    ->group(function () {
+        Route::get('permission', 'index')->name('permission');
+        Route::get('permission/show', 'show')->name('permission.show');
+        Route::get('permission/create', 'create')->name('permission.create');
+        Route::post('permission/store', 'store')->name('permission.store');
+        Route::get('permission/edit/{permission}', 'edit')->name('permission.edit');
+        Route::post('permission/update/{permission}', 'update')->name('permission.update');
+        Route::delete('permission/delete/{permission}', 'destroy')->name('permission.delete');
+    })
+    ->middleware(['auth', 'verified']);
+
+
+
+    Route::controller(AssignRolePermissionController::class)
+    ->group(function () {
+        Route::get('rolePermission', 'index')->name('rolePermission');
+        Route::get('rolePermission/show', 'show')->name('rolePermission.show');
+        Route::get('rolePermission/create/{role}', 'create')->name('rolePermission.create');
+        Route::post('rolePermission/store/{role}', 'store')->name('rolePermission.store');
+        Route::get('rolePermission/edit/{permission}', 'edit')->name('rolePermission.edit');
+        Route::post('rolePermission/update/{permission}', 'update')->name('rolePermission.update');
+        Route::delete('rolePermission/delete/{permission}', 'destroy')->name('rolePermission.delete');
+    })
+    ->middleware(['auth', 'verified']);
+
+
+
+
+
+
+//profile route
+
+
+
+Route::controller(EmployeeProfileController::class)
+    ->group(function () {
+        Route::get('profilePhoto', 'profilePhoto')->name('profilePhoto');
+        Route::post('profilePhotoUpdate', 'profilePhotoUpdate')->name('profilePhotoUpdate');
+        Route::get('profile', 'profile')->name('profile');
+        Route::get('get/profile/details', 'getProfileDetails')->name('getProfileDetails');
+      
+    })
+    ->middleware(['auth', 'verified']);
+
+
+    Route::controller(EmployeeDetailsController::class)
+    ->group(function () {
+       
+        Route::post('employee/details/{id}', 'employeeDetails')->name('employeeDetails');
+    })
+    ->middleware(['auth', 'verified']);
+
+
+
+
 
 Route::controller(DepartmentController::class)
     ->group(function () {
@@ -152,6 +261,7 @@ Route::controller(CentreNewsController::class)
 Route::controller(SubEditorController::class)
     ->group(function () {
         Route::get('reading', 'index')->name('sub_editor');
+        Route::get('getData', 'returnData');
         Route::get('reading/show/{subEditor}', 'show')->name('sub_editor.show');
         Route::get('reading/create', 'create')->name('sub_editor.create');
         Route::post('reading/store/{subEditor}', 'store')->name('sub_editor.store');
@@ -174,8 +284,8 @@ Route::controller(SubEditorController::class)
 Route::controller(ReadingController::class)
     ->group(function () {
 
-        Route::get('reading/mycomplete/news', 'index')->name('reading.myNews');
-        Route::get('reading/myRawNews/', 'index2')->name('reading.myRawNews');
+        Route::get('reading/mycomplete/news', 'completeNews')->name('reading.myNews');
+        Route::get('reading/myRawNews/', 'rawNews')->name('reading.myRawNews');
 
 
 

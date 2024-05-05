@@ -53,7 +53,7 @@
                                             <label for="exampleFormControlTextarea3">
                                                 <strong> News Body : </strong>
                                             </label>
-                                            <textarea name="body" id="body" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
+                                            <textarea name="body" id="summernote" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
                                                {{ $news->body }}
                                             </textarea> 
                                             {{-- <textarea name="body" id="body" cols="30" rows="10"></textarea> --}}

@@ -9,18 +9,16 @@
                     <div class="row py-2 ">
                         <div class="col">
                             <div class="row shadow-sm text-muted">
-                                <div class="col text-uppercase ">
-                                    <h5> <strong>My Todays Raw News News</strong> </h5>
-                                </div>
-                                <div class="col text-uppercase ">
-                                    <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info text-white"> <strong> My Complete News</strong> </a>
-                                </div>
 
-                            
+
+
+
 
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
-                                    <a href="{{ route('reading.myRawNews') }}" class="btn btn-sm btn-info px-3 rounded-0">My Raw News</a>
+                                   
+                                    <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info px-3 rounded-0">
+                                        Back</a>
                                 </div>
                             </div>
                         </div>
@@ -32,60 +30,152 @@
 
                     <div class="row">
                         <div class="col">
-                            <table id="example" class="table table-sm table-striped table-bordered" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th width="5%">SL</th>
-                                        <th>Image</th>
+                            <div class="row">
+                                <div class="col-md-6">
 
-                                        <th>Title</th>
-                                        <th>Reporter</th>
-                                        <th>Checked By</th>
-                                        <th>Column No</th>
-                                        <th>Page No</th>
-                                        <th>status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody class="" style="font-size:0.9em;">
-                                    @foreach ($news as $news)
-                                        <tr>
-
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>
-                                                <img src="{{ asset($news->image) }}" width="50px" alt="">
-                                            </td>
-                                            <td>{{ $news->title }}</td>
-                                            <td>{{ $news->reporter->name }}</td>
-                                            <td>{{ auth()->user()->name }}</td>
-                                            <td>{{ $news->column_no }}</td>
-                                            <td>{{ $news->page_no }}</td>
-                                            <td class="badge  text-center {{ $news->complete == 1 ? 'badge-success' : 'badge-info' }}">
-                                                {{ $news->status == 4 ? 'Complete' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
-                                            </td>
+                                    <div class="col">
+                                        <div class="row shadow-sm text-muted">
+                                            <div class="col text-uppercase ">
+                                                <h5 style="font-size: 15px"> <strong>Complete News</strong> </h5>
+                                            </div>
 
 
 
 
+                                            <!-- Button Add Category modal -->
 
-                                            <td>
+                                        </div>
+                                    </div>
+                                    <table class="table table-sm table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%">SL</th>
+                                                <th>Image</th>
 
-                                                <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                    <a href="{{ route('sub_editor.show', $news->id) }}" type="button"
-                                                        class="btn btn-sm  btn-primary">View</a>
-                                                    <a href="{{ route('sub_editor.edit', $news->id) }}" type="button"
-                                                        class="btn btn-sm btn-info">Edit</a>
-                                                    {{-- <button onclick="deleteData({{ $news->id }})" type="button"
+                                                <th>Title</th>
+                                                <th>Reporter</th>
+                                                <th>Checked By</th>
+                                                <th>Column No</th>
+                                                <th>Page No</th>
+                                                {{-- <th>status</th> --}}
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="" style="font-size:0.9em;">
+                                            @foreach ($tComNews as $news)
+                                                <tr>
+
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>
+                                                        <img src="{{ asset($news->image) }}" width="50px" alt="">
+                                                    </td>
+                                                    <td>{{ $news->title }}</td>
+                                                    <td>{{ $news->reporter->name }}</td>
+                                                    <td>{{ auth()->user()->name }}</td>
+                                                    <td>{{ $news->column_no }}</td>
+                                                    <td>{{ $news->page_no }}</td>
+                                                    {{-- <td
+                                                        class="badge  text-center {{ $news->complete == 1 ? 'badge-success' : 'badge-info' }}">
+                                                        {{ $news->status == 4 ? 'Complete' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
+                                                    </td> --}}
+
+
+
+
+
+                                                    <td>
+
+                                                        <div class="btn-group btn-block" role="group"
+                                                            aria-label="Basic example">
+                                                            <a href="{{ route('sub_editor.show', $news->id) }}"
+                                                                type="button" class="btn btn-sm  btn-primary">View</a>
+                                                            <a href="{{ route('sub_editor.edit', $news->id) }}"
+                                                                type="button" class="btn btn-sm btn-info">Edit</a>
+                                                            {{-- <button onclick="deleteData({{ $news->id }})" type="button"
                                                         class="btn btn-sm btn-danger">Delete</button> --}}
-                                                </div>
-                                            </td>
+                                                        </div>
+                                                    </td>
 
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
 
-                            </table>
+                                    </table>
+                                    {{ $tComNews->links() }}
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col">
+                                        <div class="row shadow-sm text-muted">
+                                            <div class="col text-uppercase ">
+                                                <h5 style="font-size: 15px"> <strong>Raw News News</strong> </h5>
+                                            </div>
+
+
+
+
+                                            <!-- Button Add Category modal -->
+
+                                        </div>
+                                    </div>
+                                    <table class="table table-sm table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%">SL</th>
+                                                <th>Image</th>
+                                                <th>Title</th>
+                                                <th>Reporter</th>
+                                                <th>Checked By</th>
+                                                <th>Column No</th>
+                                                <th>Page No</th>
+                                                {{-- <th>status</th> --}}
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="" style="font-size:0.9em;">
+                                            @foreach ($tRnews as $news)
+                                                <tr>
+
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>
+                                                        <img src="{{ asset($news->image) }}" width="50px" alt="">
+                                                    </td>
+                                                    <td>{{ $news->title }}</td>
+                                                    <td>{{ $news->reporter->name }}</td>
+                                                    <td>{{ auth()->user()->name }}</td>
+                                                    <td>{{ $news->column_no }}</td>
+                                                    <td>{{ $news->page_no }}</td>
+                                                    {{-- <td
+                                                        class="badge  text-center {{ $news->complete == 1 ? 'badge-success' : 'badge-info' }}">
+                                                        {{ $news->status == 4 ? 'Complete' : ($news->status == 2 ? 'Approved by Reading' : ($news->status == 2 ? 'Approved by Graphics' : 'Pending')) }}
+                                                    </td> --}}
+
+
+
+
+
+                                                    <td>
+
+                                                        <div class="btn-group btn-block" role="group"
+                                                            aria-label="Basic example">
+                                                            <a href="{{ route('sub_editor.show', $news->id) }}"
+                                                                type="button" class="btn btn-sm  btn-primary">View</a>
+                                                            <a href="{{ route('sub_editor.edit', $news->id) }}"
+                                                                type="button" class="btn btn-sm btn-info">Edit</a>
+                                                            {{-- <button onclick="deleteData({{ $news->id }})" type="button"
+                                                        class="btn btn-sm btn-danger">Delete</button> --}}
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+
+                                    </table>
+                                    {{ $tRnews->links() }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

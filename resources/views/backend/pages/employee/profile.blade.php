@@ -14,7 +14,7 @@
                             </div>
 
                             <div class="float-right pr-4">
-                                <a href="" class="btn btn-sm btn-primary px-4">Back</a>
+                                <a href="{{ route('dashboard') }}" class="btn btn-sm btn-primary px-4">Back</a>
                             </div>
                             
                         </div>

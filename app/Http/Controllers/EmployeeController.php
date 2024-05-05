@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\Department;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
@@ -33,7 +34,9 @@ class EmployeeController extends Controller
     {
         $departments = Department::all();
         $positions = Position::all();
-        return view('backend.pages.employee.add', compact('departments', 'positions'));
+
+        $roles = Role::all();
+        return view('backend.pages.employee.add', compact('departments', 'positions', 'roles'));
     }
 
     /**
@@ -72,8 +75,9 @@ class EmployeeController extends Controller
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'role' => $request->role,
             ]);
+
+            $user->roles()->attach($validatedData['role']);
 
             // Create Employee
             Employee::create([

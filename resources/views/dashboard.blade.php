@@ -62,7 +62,9 @@
                                                            
                                                             <div class="message-body px-3">
                                                                 <div class="message-body-heading">
-                                                                    <h5>Daniel Dock <span class="unread">Unread</span></h5>
+                                                                @role('editor')
+                                                                <h5>Daniel Dock <span class="unread">Unread</span></h5>
+                                                                @endrole
                                                                     <span>7 hours ago</span>
                                                                 </div>
                                                                 <p>Hello, Lorem ipsum dolor sit amet, consectetur adipiscing

@@ -14,22 +14,24 @@ class ReadingController extends Controller
      */
 
     //my complete news
-    public function index()
+    public function completeNews()
     {
-        $newses = Reading::whereDate('created_at', Carbon::today())
+        $tComNews = Reading::whereDate('created_at', Carbon::today())
+        ->where('user_id', auth()->user()->id)
+        ->where('complete', 1)
+        ->with('user', 'reporter')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+
+        $tRnews = RawNews::whereDate('created_at', Carbon::today())
             ->where('user_id', auth()->user()->id)
             ->where('complete', 1)
             ->with('user', 'reporter')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        $allNews = Reading::where('user_id', auth()->user()->id)
-            ->where('complete', 1)
-            ->with('user', 'reporter')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        return view('backend.pages.reading.index', compact('newses', 'allNews'));
+        return view('backend.pages.reading.index', compact('tComNews', 'tRnews'));
     }
 
     /**
@@ -38,15 +40,22 @@ class ReadingController extends Controller
 
     //my completed raw news
 
-    public function index2()
+    public function rawNews()
     {
-        $news = RawNews::whereDate('created_at', Carbon::today())
-            ->where('user_id', auth()->user()->id)
+
+        $tComNews = Reading::where('user_id', auth()->user()->id)
+        ->where('complete', 1)
+        ->with('user', 'reporter')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+
+        $tRnews = RawNews::where('user_id', auth()->user()->id)
             ->where('complete', 1)
             ->with('user', 'reporter')
             ->orderBy('created_at', 'desc')
-            ->get();
-        return view('backend.pages.reading.rawNews', compact('news'));
+            ->paginate(10);
+        return view('backend.pages.reading.rawNews', compact('tComNews','tRnews'));
     }
 
     /**

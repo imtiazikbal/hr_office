@@ -3,14 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use App\Traits\HasPermissionTrait;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable,HasPermissionTrait;
 
 public function employee(){
     return $this->hasMany(Employee::class);
@@ -31,6 +32,12 @@ public function track(){
 public function user(){
 
     return $this->hasMany(RawNews::class);   
+}
+
+public function employeeDetails(){
+
+    return $this->hasMany(EmployeeDetails::class);
+    
 }
 
     /**

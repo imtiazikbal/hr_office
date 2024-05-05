@@ -9,10 +9,7 @@
                     <div class="row py-2 ">
                         <div class="col">
                             <div class="row shadow-sm text-muted">
-                                <div class="col text-uppercase ">
-                                    <h5> <strong> My Todays All News </strong> </h5>
-                                </div>
-
+                               
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
                                     <a href="{{ route('news.create') }}" class="btn btn-sm btn-info px-3 rounded-0">Add
@@ -30,6 +27,18 @@
                         <div class="col">
                             <div class="row">
                                 <div class="col-md-8">
+                                   
+                                        <div class="col">
+                                            <div class="row shadow-sm text-muted">
+                                                <div class="col text-uppercase ">
+                                                    <h5 style="font-size: 20px"> <strong>Todays News </strong> </h5>
+                                                </div>
+                                               
+                
+                                               
+                                            </div>
+                                        </div>
+                                 
                                     <table id="example" class="table table-sm table-striped table-bordered" style="width:100%">
                                         <thead>
                                             <tr>
@@ -88,7 +97,22 @@
                                     </table>
                                 </div>
                                 <div class="col-md-4">
-                                    <table id="example" class="table table-sm table-striped table-bordered" style="width:100%">
+                                    <div class="row py-2 ">
+                                        <div class="col">
+                                            <div class="row shadow-sm text-muted">
+                                                <div class="col text-uppercase ">
+                                                    <h5 style="font-size: 20px"> <strong>All News </strong> </h5>
+                                                </div>
+                                               
+                
+                                                <div class="col text-uppercase ">
+                                                    <h5 style="font-size: 20px"> <strong>Draft News </strong> </h5>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table  class="table table-sm table-striped table-bordered" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th width="5%">SL</th>
@@ -101,14 +125,14 @@
                                         </thead>
         
                                         <tbody class="" style="font-size:0.9em;">
-                                            @foreach ($newses as $news)
+                                            @foreach ($myNewses as $news)
                                                 <tr>
         
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>
                                                         <img src="{{ asset($news->image) }}" width="50px" alt="">
                                                     </td>
-                                                    <td>{{ $news->title }}</td>
+                                                    <td>{{ Str::limit($news->title, 20) }}</td>
                                                   
                                                   
         
@@ -132,6 +156,7 @@
                                         </tbody>
         
                                     </table>
+                                    {{ $myNewses->links() }}
                                 </div>
                             </div>
                         </div>

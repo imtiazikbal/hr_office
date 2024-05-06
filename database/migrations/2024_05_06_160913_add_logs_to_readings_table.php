@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->timestamps();
+        Schema::table('readings', function (Blueprint $table) {
+            $table->unsignedBigInteger('logs')->nullable();
+            $table->foreign('logs')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permissions');
+        Schema::table('readings', function (Blueprint $table) {
+            $table->dropColumn('logs');
+        });
     }
 };

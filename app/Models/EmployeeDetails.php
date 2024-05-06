@@ -9,9 +9,7 @@ class EmployeeDetails extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function employeeDetails(){
-        return $this->belongsTo(Employee::class);
-    }
+ 
     public function user(){
         return $this->belongsTo(User::class);
     }

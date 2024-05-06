@@ -40,6 +40,13 @@ public function employeeDetails(){
     
 }
 
+//rLog = Reading Log
+public function rLog(){
+
+    return $this->hasMany(SubEditor::class,'logs');
+    
+}
+
     /**
      * The attributes that are mass assignable.
      *

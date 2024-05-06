@@ -103,19 +103,16 @@
                                         class="col-sm-4 col-form-label col-form-label-sm "><strong>Role:
                                         </strong></label>
                                         <div class="col-sm-8">
-                                            <select class="custom-select form_check_color_right" id="role" name="role" required>
-                                                <option value="">Select Role</option>
-                                                @php
-                                                    $role = $employee->user->role;
-                                                    $roleNumber = intval($role);
-                                                @endphp
-                                                <option {{ $roleNumber === 1 ? 'selected' : '' }} value="1">Hr. Admin</option>
-                                                <option {{ $roleNumber === 6 ? 'selected' : '' }} value="6">It</option>
-                                                <option {{ $roleNumber === 3 ? 'selected' : '' }} value="3">Desk</option>
-                                                <option {{ $roleNumber === 4 ? 'selected' : '' }} value="4">Reporting</option>
-                                                <option {{ $roleNumber === 5 ? 'selected' : '' }} value="5">Reading</option>
-                                                <option {{ $roleNumber === 2 ? 'selected' : '' }} value="2">Online</option>
-                                            </select>
+                                            <select multiple aria-label="multiple select example" class="custom-select form_check_color_right" id="role"
+                                            name="role[]" value="{{ old('role') }}" required>
+                                            <option value="">Select Role</option>
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id }}"
+                                                    
+                                                    {{ in_array($role->id, $userRoles) ? 'selected' : '' }}
+                                                    >{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
                                         </div>
                                         
                                     @if ($errors->has('role'))

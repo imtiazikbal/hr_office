@@ -22,6 +22,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\EmployeeDetailsController;
 use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\KPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -273,6 +274,13 @@ Route::controller(SubEditorController::class)
         Route::post('reading/update/{subEditor}', 'update')->name('sub_editor.update');
         Route::delete('sub_editor/delete/{subEditor}', 'destroy')->name('sub_editor.delete');
 
+
+        // Here Update News[ When a redaing section update the news but not complete the news] 
+
+        Route::post('reading/update/central/reading/news/{subEditor}', 'updateCentralNewsbyReading')->name('reading.updateCentralNewsbyReading');
+
+
+
         // tracking here
         Route::get('tracker/{subEditor}', 'tracking')->name('sub_editor.tracking');
         Route::post('cancel/track/{subEditor}', 'cancelTrack')->name('cancel.tracking');
@@ -286,12 +294,31 @@ Route::controller(ReadingController::class)
 
         Route::get('reading/mycomplete/news', 'completeNews')->name('reading.myNews');
         Route::get('reading/myRawNews/', 'rawNews')->name('reading.myRawNews');
+        Route::get('reading/todayCompleteNews/', 'todayCompleteNews')->name('reading.todayCompleteNews');
 
 
 
-    })
+    })->middleware(['auth', 'verified']);
 
 
-    ->middleware(['auth', 'verified']);
+
+
+    //KPI Controller 
+    Route::controller(KPIController::class)
+    ->group(function () {
+
+        Route::get('EmployeeKPI', 'EmployeeKPI')->name('kpi.EmployeeKPI');
+        Route::get('EmployeeKPI/{date}', 'EmployeeKPIFilterByDate')->name('kpi.EmployeeKPIByDate');
+
+
+        Route::get('EmployeeKPIFilter', 'EmployeeKPIFilterByFromToDate')->name('kpi.EmployeeKPIByFromToDate');
+       
+
+
+
+    })->middleware(['auth', 'verified']);
+
+
+
 
 require __DIR__ . '/auth.php';

@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users_permission', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('permission_id');
-
-            $table->primary(['user_id','permission_id']);
+        Schema::table('sub_editors', function (Blueprint $table) {
+            $table->unsignedBigInteger('logs')->nullable();
+            $table->foreign('logs')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users_permission');
+        Schema::table('sub_editors', function (Blueprint $table) {
+            $table->dropColumn('logs');
+        });
     }
 };

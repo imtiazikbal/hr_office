@@ -133,19 +133,37 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Page No</label>
+                            <label for="exampleInputEmail1">Page No *</label>
                             <input type="number" class="form-control" id="page_no"
                                 aria-describedby="emailHelp" placeholder="Page No">
-                            <small id="emailHelp" class="form-text text-muted">Please write the
-                                page number.</small>
+                           
                         </div>
                         <input type="hidden" id="id" value="">
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Column No</label>
+                            <label for="exampleInputPassword1">Column No *</label>
                             <input type="number" class="form-control" id="column_no"
                                 placeholder="Column No">
-                            <small id="emailHelp" class="form-text text-muted">Please write the
-                                Column number.</small>
+                           
+                        </div>
+
+                        {{-- <div class="form-group">
+                            <label for="exampleInputEmail1">News Type</label>
+                            <input type="number" class="form-control" id="nType"
+                                aria-describedby="emailHelp" placeholder="News Type">
+                            
+                        </div> --}}
+                        
+                        
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">News Type</label>
+                            
+
+                                <select name="nType" id="nType" class="form-control">
+                                    <option value="" disabled selected>Select News Type</option>
+                                    <option value="Advertisement">Advertisement</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            
                         </div>
 
                         <div class="modal-footer">
@@ -175,9 +193,11 @@
                             let id = $('#id').val();
                             let page_no = $('#page_no').val();
                             let column_no = $('#column_no').val();
+                            let nType = $('#nType').val();
                             let forData = {
                                 page_no: page_no,
-                                column_no: column_no
+                                column_no: column_no,
+                                nType: nType
                             }
 
 

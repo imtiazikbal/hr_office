@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Carbon\Carbon;
+use App\Helper\BengaliWordCounter;
 
 use App\Models\RawNews;
 use App\Models\Reading;
@@ -23,6 +24,10 @@ class ReadingController extends Controller
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
+        foreach ($tComNews as $news) {
+            $text = $news->body;
+            $news->body = BengaliWordCounter::countWords($text);
+        }
 
         $tRnews = RawNews::whereDate('created_at', Carbon::today())
             ->where('user_id', auth()->user()->id)
@@ -61,9 +66,14 @@ class ReadingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function todayCompleteNews(Request $request)
     {
-        //
+        $tComNews = Reading::whereDate('created_at', Carbon::today())
+        ->where('complete', 1)
+        ->with('user', 'reporter')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+        return view('backend.pages.reading.complete', compact('tComNews'));
     }
 
     /**

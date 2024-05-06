@@ -15,11 +15,12 @@
                                 <div class="col text-uppercase ">
                                     <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info text-white"> <strong>
                                             My Complete News</strong> </a>
+
+                                    <a href="{{ route('reading.todayCompleteNews') }}"
+                                        class="btn btn-sm btn-primary text-white"> <strong>
+                                            Today Complete News</strong></a>
                                 </div>
-                                <div class="col text-uppercase ">
-                                    <button onclick="window.location.reload();" class="btn btn-sm btn-info text-white">
-                                        <strong>Reload Page</strong> </button>
-                                </div>
+
                                 <!-- Button Add Category modal -->
                                 {{-- <div class="ml-auto mr-3">
                                     <a href="{{ route('news.create') }}" class="btn btn-sm btn-info px-3 rounded-0">Add
@@ -28,11 +29,50 @@
                             </div>
                         </div>
                     </div>
+                    <style>
+                        .kpi {
+                            background: #ccdac7;
+                        }
+                    </style>
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center align-items-center kpi">
+                            <h5 class="text-black mr-3 text-uppercase"> Search KPI</h5>
 
-
+                            <form action="{{ route('kpi.EmployeeKPIByFromToDate') }}">
+                                <div class="row d-flex justify-content-between align-items-center py-3">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="text-muted">Employee</label>
+                                            <select name="user_id" class="form-control" id="">
+                                                <option value="" selected disabled>Select Employee</option>
+                                                @foreach ($employeeReading as $employee)
+                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="text-muted">From Date</label>
+                                            <input type="date" class="form-control" name="from">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="text-muted">To Date</label>
+                                            <input type="date" class="form-control" name="to">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-secondary text-white">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
                     <!--Input Group Start-->
-                    <form action="">
+                    <form action="" class="py-3">
 
                         <div class="row">
                             <div class="col-md-6 col-sm-6">
@@ -59,22 +99,23 @@
                     <div class="row">
                         <div class="col">
                             <table class="table table-sm table-striped table-bordered" style="width:100%">
-                                <thead>
+                                <thead style="font-size:0.8em;">
                                     <tr>
-                                        <th width="5%">SL</th>
-                                        <th>Image</th>
+                                        <th width="2%" class="text-center">SL</th>
+                                        <th width="2%" class="text-center">Image</th>
 
-                                        <th>Title</th>
-                                        <th>Reporter</th>
-                                        <th>Column No</th>
-                                        <th>Page No</th>
-                                        <th>status</th>
-                                        <th>Updating</th>
-                                        <th>Actions</th>
+                                        <th width="22%"class="text-center">Title</th>
+                                        <th width="8%" class="text-center"> Reporter</th>
+                                        <th width="10%">News Type</th>
+
+                                        <th width="5%" class="text-center">Status</th>
+                                        <th width="5%" class="text-center">Updating</th>
+                                        <th width="30%" class="text-center">Last Activity</th>
+                                        <th width="5%" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
 
-                                <tbody class="" style="font-size:0.9em;">
+                                <tbody class="" style="font-size:0.8em;">
 
                                 </tbody>
 
@@ -142,10 +183,32 @@
             }
         }
     </style>
+    <style>
+        /* Define custom CSS for table rows */
+        tr {
+            height: 5px;
+            /* Adjust the height to your desired value */
+        }
+
+        /* Optionally, you can also define different styles for odd and even rows */
+        tr:nth-child(even) {
+            background-color: #fcab3294;
+            /* Light gray background for even rows */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+            /* White background for odd rows */
+        }
+    </style>
 
     <script>
-
-getData();
+        $('.input-daterange input').each(function() {
+            $(this).datepicker('clearDates');
+        });
+    </script>
+    <script>
+        getData();
         setInterval(getData, 500);
         async function getData() {
             //show loader
@@ -166,24 +229,33 @@ getData();
                     newses.forEach(function(news, index) {
                         var html = `
         <tr>
-          <td>${index + 1}</td>
+          <td height="10px">${index + 1}</td>
           <td><img src="${news.image}" width="50px" alt=""></td>
           <td>${news.title}</td>
           <td>${news.user.name}</td>
-          <td>${news.column_no}</td>
-          <td>${news.page_no}</td>
-          <td class="text-center text-danger">${getStatusText(news.status)}</td>
+          <td>${news.nType}</td>
+     
+          <td class="text-center ${news.status === 0 ? 'btn-warning' : 'btn-primary'}">${getStatusText(news.status)}</td>
           <td>
             <div class="d-flex justify-content-between align-items-center">
               ${news.track !== null ? `
-                        <div>
-                          <div class="wrapper">
-                            <div class="pulse"><i class="fa fa-plus"></i></div>
-                          </div>
-                        </div>
-                        <span class="text-green">${news.track.name}</span>` : ''}
+                                <div>
+                                  <div class="wrapper">
+                                    <div class="pulse"><i class="fa fa-plus"></i></div>
+                                  </div>
+                                </div>
+                                <span class="text-green">${news.track.name}</span>` : ''}
             </div>
           </td>
+
+
+          <td>
+                      
+            
+             </td>
+
+
+
           <td>
             <div class="btn-group btn-block" role="group" aria-label="Basic example">
               <a href="/reading/show/${news.id}" type="button" class="btn btn-sm btn-primary">View</a>
@@ -206,23 +278,20 @@ getData();
             // Function to get status text based on status code
             function getStatusText(status) {
                 switch (status) {
-                    case 1:
-                        return 'Approved by Centre';
-                    case 2:
-                        return 'Approved by Reading';
-                    case 3:
-                        return 'Approved by Graphics';
+                    case 4:
+                        return 'Approved';
+
                     default:
                         return 'Pending';
                 }
             }
             // Call getData() initially
-         
+
 
             // Call getData() every second using setInterval
-           
+
         }
-   
+
 
 
 

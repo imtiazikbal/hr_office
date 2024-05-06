@@ -30,8 +30,10 @@
                                 <th width="5%">SL</th>
                                
                                 <th>Name</th>
-                                <th>Permission</th>
+                                <th>Give Permission</th>
+                                <th>Permissions</th>
                                 <th>Slug</th>
+                                <th>Action</th>
                                 
                             </tr>
                         </thead>
@@ -46,6 +48,13 @@
                                 <td class="btn btn-sm btn-info d-flex justify-content-center">
                                     <a href="{{ url('rolePermission/create/'. $role->id) }}" class=" text-white text-center" href="">Add/Update Permission</a>
                                 </td>
+                                <td>
+                                    @foreach ($role->permissions as $permission) 
+                                        <span class="badge badge-primary">{{ $permission->name }}</span>
+                                        
+                                    @endforeach
+                                    
+                                   </td>
                                 <td>{{ $role->slug }}</td>
 
                                 

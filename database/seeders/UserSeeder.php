@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Permission;
@@ -15,20 +16,35 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::insert([
-            ['name'=>'user','email'=>'user11@gmail.com','password'=>bcrypt('password')],
-            ['name'=>'Editor','email'=>'editor11@gmail.com','password'=>bcrypt('password')],
-            ['name'=>'Author','email'=>'author11@gmail.com','password'=>bcrypt('password')],
-        ]);
+
+
+
+
+    
+
+ 
+            
+     
+
+
+
+
+
+
+
 
         Role::insert([
             ['name'=>'Editor','slug'=>'editor'],
             ['name'=>'Author','slug'=>'author'],
+            ['name'=>'Admin','slug'=>'admin'],
+            ['name'=>'Super-Admin','slug'=>'super-admin'],
         ]);
 
         Permission::insert([
-            ['name'=>'Add Post','slug'=>'add-post'],
-            ['name'=>'Delete Post','slug'=>'delete-post'],
+            ['name'=>'edit-news','slug'=>'edit-news'],
+            ['name'=>'delete-news','slug'=>'delete-news'],
+            ['name'=>'create-news','slug'=>'create-news'],
+            ['name'=>'view-news','slug'=>'view-news'],
         ]);
 
     }

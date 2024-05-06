@@ -47,9 +47,19 @@
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
 
     {{-- summer note --}}
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script> --}}
+    <script src="https://cdn.tiny.cloud/1/vsnnrc7wucpxmp4qlyzttrzn2q4ug731s4qbjyohjr0likio/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
     <title>Admin Panel</title>
+
+    <style>
+        @import url('https://fonts.maateen.me/solaiman-lipi/font.css');
+
+        body{
+            font-family: 'SolaimanLipi', Arial, sans-serif !important;
+        }
+        </style>
 </head>
 
 <body>
@@ -97,6 +107,23 @@
           height: 700
         });
       </script>
+
+    
+        <script>
+      tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+          { value: 'First.Name', title: 'First Name' },
+          { value: 'Email', title: 'Email' },
+        ],
+        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+      });
+    </script>
+     
 
     <!-- Your custom CKEDITOR setup -->
     <!-- <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>

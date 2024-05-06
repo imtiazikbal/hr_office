@@ -15,7 +15,7 @@
                                     <a href="{{ route('sub_editor') }}" class="btn btn-sm btn-info px-3 rounded-0">Centre
                                         News</a>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -65,6 +65,8 @@
                                                 #mce_0_toolbar3 {
                                                     display: none;
                                                 }
+
+                                                
                                             </style>
 
                                         </div>
@@ -78,15 +80,14 @@
 
                             <div class="col-md-3">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group row">
                                             {{-- <label for="exampleFormControlTextarea3">
                                             <strong>Page No:</strong>
                                         </label> --}}
                                             <div class="col-sm-12">
-                                                <input type="text" {{ auth()->user()->role !== '0' ? 'readonly' : '' }}
-                                                    name="page_no" id="title" value="{{ $news->page_no }}"
-                                                    id="colFormLabel"
+                                                <input type="text" readonly name="page_no" id="title"
+                                                    value="{{ $news->page_no }}" id="colFormLabel"
                                                     class="form-control bg-gray form-control-sm form_check_color_right"
                                                     placeholder="Page No" required>
                                             </div>
@@ -95,15 +96,14 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group row">
                                             {{-- <label for="formControlSelect1">
                                             <strong>Colmun No: </strong>
                                         </label> --}}
                                             <div class="col-sm-12">
-                                                <input type="text" {{ auth()->user()->role !== '0' ? 'readonly' : '' }}
-                                                    name="column_no" id="title" value="{{ $news->column_no }}"
-                                                    id="colFormLabel"
+                                                <input type="text" readonly name="column_no" id="title"
+                                                    value="{{ $news->column_no }}" id="colFormLabel"
                                                     class="form-control form-control-sm form_check_color_right"
                                                     placeholder="Column No" required>
                                             </div>
@@ -112,31 +112,25 @@
                                             @endif
                                         </div>
                                     </div>
-                                </div>
-
-                                {{-- <div class="form-group row">
-                                    <div class="input-group">
-                                        <label class="col-sm-5 col-form-label col-form-label-sm">
-                                            <strong> Forword To:</strong>
-                                        </label>
-                                        <div class="col-sm-7">
-                                            <select id="chief_reporter_id" name="chief_reporter_id"
-                                                class="custom-select custom-select-sm">
-                                                <option value="0">Chef Reporter</option>
-                                                <option value="1">News Editor</option>
-                                                <option value="2">Featured-1</option>
-                                                <option value="3">Featured-2</option>
-                                                <option value="4">Featured-3</option>
-                                                <option value="5">Featured-4</option>
-                                                <option value="6">Featured-5</option>
-                                                <option value="7">Featured-6</option>
-                                                <option value="8">Featured-7</option>
-                                                <option value="9">Featured-8</option>
-                                            </select>
-
+                                    <div class="col-md-4">
+                                        <div class="form-group row">
+                                            {{-- <label for="exampleFormControlTextarea3">
+                                            <strong>Page No:</strong>
+                                        </label> --}}
+                                            <div class="col-sm-12">
+                                                <input type="text" readonly name="nType" id="title"
+                                                    value="{{ $news->nType }}" id="colFormLabel"
+                                                    class="form-control bg-gray form-control-sm form_check_color_right"
+                                                    placeholder="Page No" required>
+                                            </div>
+                                            @if ($errors->has('title'))
+                                                <div class="error mt-2 text-danger">{{ $errors->first('title') }}</div>
+                                            @endif
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
+
+                               
 
                                 <div class="form-group row">
 
@@ -161,7 +155,7 @@
 
                                     </div>
 
-                                    
+
                                     <script>
                                         /*show image script */
                                         function showMyImage(fileInput) {
@@ -208,10 +202,14 @@
                                 <div class="row mb-5">
                                     <div class="col text-right">
                                         <button type="button" onclick="submitToDraft()"
-                                            class="btn btn-block btn-success py-4 shadow">Back</button>
+                                            class="btn btn-block btn-primary shadow">Back</button>
+
+
+                                            <button type="button" onclick="updateNewsByReading()"
+                                            class="btn btn-block btn-success shadow">Update</button>
 
                                         <button type="button" onclick="submitToCentral()"
-                                            class="btn btn-block btn-primary py-4 shadow">Complete and Save</button>
+                                            class="btn btn-block btn-primary shadow">Complete and Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -231,6 +229,17 @@
                 // Submit the form
                 document.getElementById('save-form').submit();
             }
+
+
+            function updateNewsByReading() {
+                // Set the form action to the draft route
+                document.getElementById('save-form').action = "{{ url('reading/update/central/reading/news/' . $news->id) }}";
+                // Submit the form
+                document.getElementById('save-form').submit();
+            }
+
+
+
 
             function submitToCentral() {
                 // Set the form action to the central route
@@ -300,12 +309,11 @@
     <script>
         // Disable back button
         history.pushState(null, null, document.URL);
-window.addEventListener('popstate', function () {
-    history.pushState(null, null, document.URL);
-});
-
+        window.addEventListener('popstate', function() {
+            history.pushState(null, null, document.URL);
+        });
     </script>
-    
+
 
     <script>
         // Check if the browser is Chrome
@@ -314,7 +322,7 @@ window.addEventListener('popstate', function () {
         if (isChrome) {
             // Disable back button for Chrome
             history.pushState(null, null, document.URL);
-            window.addEventListener('popstate', function () {
+            window.addEventListener('popstate', function() {
                 history.pushState(null, null, document.URL);
             });
         }
@@ -323,7 +331,11 @@ window.addEventListener('popstate', function () {
 
 
 
-
+<script>
+    window.onload = function() {
+        alert('If you want to go back. Please click on back button');
+    }
+</script>
 
 
 

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\Department;
-use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Models\EmployeeDetails;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\File;
@@ -21,9 +22,10 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::with(['position', 'department', 'user'])
+        $employees = Employee::with(['position', 'department', 'user', 'user.roles'])
             ->orderBy('id', 'desc')
             ->get();
+           // return $employees;
         return view('backend.pages.employee.index', compact('employees'));
     }
 
@@ -56,7 +58,7 @@ class EmployeeController extends Controller
                 'image' => ['required', 'mimes:png,jpg,jpeg,gif,svg,webp', 'max:2048'],
                 'department_id' => ['required'],
                 'position_id' => ['required'],
-                'role' => ['required'],
+                
             ]);
 
             // Handle image upload
@@ -77,7 +79,7 @@ class EmployeeController extends Controller
                 'password' => Hash::make($validatedData['password']),
             ]);
 
-            $user->roles()->attach($validatedData['role']);
+            $user->roles()->attach($request->role);
 
             // Create Employee
             Employee::create([
@@ -109,12 +111,13 @@ class EmployeeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Employee $employee)
+    public function show($id)
     {
-        $employee = Employee::where('id', $employee->id)->with(['position', 'department', 'user'])->first();
-
-           //return $employee;
-       return view('backend.pages.employee.profile', compact('employee'));
+        //$employee = Employee::where('id', $employee->id)->with(['position', 'department', 'user'])->first();
+        $user =  User::with('employee', 'employee.position', 'employee.department')->where('id', $id)->first();
+        $userDetails = EmployeeDetails::where('user_id', $id)->first();
+   // return $userDetails;
+    return view('backend.pages.employee.profile', compact('user','userDetails'));
     }
 
     /**
@@ -128,7 +131,9 @@ class EmployeeController extends Controller
 
         $departments = Department::all();
         $positions = Position::all();
-        return view('backend.pages.employee.edit', compact('employee', 'departments', 'positions'));
+        $roles = Role::all();
+        $userRoles = $employee->user->roles->pluck('id')->toArray();
+        return view('backend.pages.employee.edit', compact('employee', 'departments', 'positions','roles','userRoles'));
     }
 
     /**
@@ -136,6 +141,7 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
+        //dd($request->all());
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -153,7 +159,7 @@ class EmployeeController extends Controller
 
             'department_id' => ['required'],
             'position_id' => ['required'],
-            'role' => ['required'],
+           
         ]);
 
         if ($request->hasFile('image')) {
@@ -173,10 +179,12 @@ class EmployeeController extends Controller
                 'name' => $validatedData['name'],
                 'email' => $request->email ? $validatedData['email'] : $employee->email,
                 'password' => $request->password ? Hash::make($validatedData['password']) : $employee->password,
-                'role' => $request->role,
+         
             ];
 
             $user = User::where('id', $employee->user_id)->update($userData);
+       
+            $user->roles()->attach($request->role);
 
             // Create Employee
             $employee->update([
@@ -199,10 +207,14 @@ class EmployeeController extends Controller
                 'name' => $validatedData['name'],
                 'email' => $request->email ? $validatedData['email'] : $employee->email,
                 'password' =>  $employee->password,
-                'role' => $request->role,
+              
             ];
 
-            $user = User::where('id', $employee->user_id)->update($userData);
+            User::where('id', $employee->user_id)->update($userData);
+            $user = User::find($employee->user_id);
+     
+            $user->roles()->sync($request->role);
+
 
             $employee->update([
                 'name' => $validatedData['name'],

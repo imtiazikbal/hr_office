@@ -103,30 +103,19 @@
                                     <label for="ConfirmPassword"
                                         class="col-sm-4 col-form-label col-form-label-sm "><strong>Role:
                                         </strong></label>
-
+                                       
                                     <div class="col-sm-8">
-                                        @if (Auth()->user()->hasRole('super-admin'))
-                                            <select class="custom-select form_check_color_right" id="role"
-                                                name="role" value="{{ old('role') }}" required>
+                                     
+                                            <select multiple aria-label="multiple select example" class="custom-select form_check_color_right" id="role"
+                                                name="role[]" value="{{ old('role') }}" required>
                                                 <option value="">Select Role</option>
                                                 @foreach ($roles as $role)
                                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                                    
                                                 @endforeach
                                             </select>
-                                        @else
-                                            <select class="custom-select form_check_color_right" id="role"
-                                                name="role" value="{{ old('role') }}">
-
-
-
-                                                {{-- <option value="2">Hr.Admin</option> --}}
-                                                @foreach ($roles as $role)
-                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                                    
-                                                @endforeach
-                                            </select>
-                                        @endif
+                                          
+                                    
+                                     
                                     </div>
                                     {{-- default('user')->comment('0 = SuperAdmin, 1 = Admin, 2 = hr, 3 = chief editor, 4 = sub editor, 5 = reading, 6 = reporting, 7 = graphics, user'); --}}
                                     @if ($errors->has('role'))

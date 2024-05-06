@@ -10,7 +10,7 @@
                     <div class="col">
                         <div class="row ">
                             <div class="col text-uppercase">
-                                <h4> <strong > Brand List</strong>  </h4>
+                                <h4> <strong > Employee List</strong>  </h4>
                             </div>
                             <!-- Button Add Brand modal -->
                             <div class="ml-auto mr-3">
@@ -84,6 +84,7 @@
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Role</th>
                                 <th>Department</th>
                                 <th>Possition</th>
                                 <th>Join Date</th>
@@ -101,6 +102,11 @@
                                     </td>
                                 <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->email }}</td>
+                                <td> @foreach ($employee->user->roles as $role )
+                                   <span class="badge badge-primary"> {{ $role->name }}</span>
+                                @endforeach 
+                                
+                                </td>
                                 <td>{{ $employee->department->name }}</td>
                                 <td>{{ $employee->position->name }}</td>
                                 <td>{{ \Carbon\Carbon::parse($employee->date_of_joining)->format('j F Y') }}</td>
@@ -109,7 +115,7 @@
                                 <td>
                                     
                                     <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                        <a href="{{ route('employee.show', $employee->id) }}" type="button" class="btn btn-sm  btn-primary">View</a>
+                                        <a href="{{ route('employee.show', $employee->user->id) }}" type="button" class="btn btn-sm  btn-primary">View</a>
                                         <a href="{{ route('employee.edit', $employee->id) }}" type="button" class="btn btn-sm btn-info">Edit</a>
                                         <button onclick="deleteData({{ $employee->id }})" type="button"
                                             class="btn btn-sm btn-danger">Delete</button>                                    </div>

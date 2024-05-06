@@ -33,7 +33,7 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                <h5 class="modal-title text-danger" id="exampleModalLabel">Please write carefully</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -56,6 +56,25 @@
                                                         <small id="emailHelp" class="form-text text-muted">Please write the
                                                             Column number.</small>
                                                     </div>
+                                                    {{-- <div class="form-group">
+                            <label for="exampleInputEmail1">News Type</label>
+                            <input type="number" class="form-control" id="nType"
+                                aria-describedby="emailHelp" placeholder="News Type">
+                            
+                        </div> --}}
+                        
+                        
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">News Type</label>
+                            
+
+                                <select name="nType" id="nType" class="form-control">
+                                    <option value="" disabled selected>Select News Type</option>
+                                    <option value="Advertisement">Advertisement</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            
+                        </div>
 
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
@@ -85,9 +104,11 @@
                             let id = $('#id').val();
                             let page_no = $('#page_no').val();
                             let column_no = $('#column_no').val();
+                            let nType = $('#nType').val();
                             let forData = {
                                 page_no: page_no,
-                                column_no: column_no
+                                column_no: column_no,
+                                nType: nType
                             }
 
 

@@ -15,4 +15,8 @@ class SubEditor extends Model
     public function track(){
         return $this->belongsTo(User::class);      
     }
+    public function logs(){
+        return $this->belongsTo(User::class);
+        
+    }
 }

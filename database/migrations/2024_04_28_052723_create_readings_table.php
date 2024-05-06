@@ -34,6 +34,12 @@ return new class extends Migration
 
             $table->string('comment')->nullable();
             $table->integer('status')->default(0)->comment('0 = pending, 1 = approved by reading, 2 = pending for approval by graphics, 3 = rejected');
+          
+            $table->string('nType')->nullable();
+
+            $table->string('start_time')->nullable();
+            $table->string('end_time')->nullable();
+
 
             $table->boolean('complete')->default(0);
 

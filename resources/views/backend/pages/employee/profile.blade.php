@@ -30,13 +30,13 @@
                 <div class="col-xl-3 col-lg-3 col-md-3">
                     <div class="mb-3">
                         <div class="text-center px-5 px-sm-0 mb-3">
-                            <img class="img-thumbnail" src="{{ asset($employee->image) }}" width="100%">
+                            <img class="img-thumbnail" src="{{ asset($user['employee'][0]['image']) }}" width="100%">
                             <div class="text-secondery py-1">
                                 <h5 class="">
-                                    <strong>{{ $employee->name }}</strong>
+                                    <strong>{{ $user->name }}</strong>
                                 </h5>
                                 <h6 class="">
-                                    <em>{{ $employee->position->name }}</em>
+                                    <em>{{ $user['employee'][0]['department']['name'] }}</em>
                                 </h6>
                             </div>
                             <a class="btn btn-info btn-block my-2" href="#">Message
@@ -56,27 +56,45 @@
 
                             <dl id="styleprofile" class="row p-sm-2 p-1">
 
-                                <dt class="col-3 ">Profession:</dt>
-                                <dd class="col-9 shadow-sm">Dasignation</dd>
+                                <dt class="col-3 ">Designation:</dt>
+                                <dd class="col-9 shadow-sm">{{  $user['employee'][0]['position']['name'] }}</dd>
 
                                 <dt class="col-3 ">Mobile :</dt>
                                 <dd class="col-9 shadow-sm">Phone</dd>
 
                                 <dt class="col-sm-3">Email :</dt>
-                                <dd class="col-sm-9 shadow-sm">Email</dd>
+                                <dd class="col-sm-9 shadow-sm">{{ $user->email }}</dd>
 
                                 <dt class="col-sm-3">Present Town :</dt>
-                                <dd class="col-sm-9 shadow-sm">PresentTown</dd>
+                                <dd class="col-sm-9 shadow-sm">
+                                    
+                                        
+                                      @if( $userDetails)
+                                        {{ $userDetails->address }}
+                                        @endif
+                                    
+                                    
+                                
+                                </dd>
 
-                                <dt class="col-sm-3">Description:</dt>
-                                <dd class="col-sm-9 shadow-sm text-justify">Description</dd>
+                                {{-- <dt class="col-sm-3">Description:</dt>
+                                <dd class="col-sm-9 shadow-sm text-justify">Description</dd> --}}
 
                                 <dt class="col-3">Link Social:</dt>
                                 <dd class="col-9">
-                                    <a href="" class="btn btn-sm btn-outline-primary" target="_blank">Google</a>
-                                    <a href="" class="btn btn-sm btn-outline-primary" target="_blank">LinkedIn</a>
-                                    <a href="https://www.facebook.com/itmunnabd" class="btn btn-sm btn-outline-primary" target="_blank">Facebook</a>
-                                    <a href="" class="btn btn-sm btn-outline-primary" target="_blank">Twitter</a>
+                                    @if( $userDetails)
+                                    <a href=" {{ $userDetails->social_fb }}" class="btn btn-sm btn-outline-primary" target="_blank">Facebook</a>
+                                        @endif
+                                        
+                                        @if( $userDetails)
+                                    <a href=" {{ $userDetails->social_linkedin }}" class="btn btn-sm btn-outline-primary" target="_blank">LinkedIn</a>
+                                        @endif
+                                        @if( $userDetails)
+                                    <a href=" {{ $userDetails->social_twitter }}" class="btn btn-sm btn-outline-primary" target="_blank">Twitter</a>
+                                        @endif
+                                 
+                                    {{-- <a href="" class="btn btn-sm btn-outline-primary" target="_blank">LinkedIn</a>
+                                    <a href="" class="btn btn-sm btn-outline-primary" target="_blank">Twitter</a> --}}
                                 </dd>
                             </dl>
                         </div>

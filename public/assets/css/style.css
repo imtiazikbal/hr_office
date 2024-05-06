@@ -16,7 +16,12 @@
 	    
 	}
 
-
+	.note-editable {
+		font-family: 'SolaimanLipi', sans-serif;
+		/* Change to your desired font */
+		font-size: 35px;
+		/* Optional: Change font size */
+	}
 	.btn {
 		border-radius: 0px;
 	}

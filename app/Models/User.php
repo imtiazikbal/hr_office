@@ -29,6 +29,10 @@ public function track(){
     return $this->hasMany(SubEditor::class,'track_id');
     
 }
+public function logs(){
+    return $this->hasMany(SubEditor::class,'logs_id');
+    
+}
 public function user(){
 
     return $this->hasMany(RawNews::class);   
@@ -40,12 +44,10 @@ public function employeeDetails(){
     
 }
 
-//rLog = Reading Log
-public function rLog(){
+//Reading central updated log user
 
-    return $this->hasMany(SubEditor::class,'logs');
-    
-}
+
+
 
     /**
      * The attributes that are mass assignable.

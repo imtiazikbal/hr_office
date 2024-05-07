@@ -8,17 +8,24 @@
 
                     <div class="row py-2 ">
                         <div class="col">
-                            <div class="row shadow-sm text-muted">
+                            <div class="row shadow-sm text-muted" style="background: #ffffff2f;">
                                 <div class="col text-uppercase ">
                                     <h5> <strong> Todays All News(From Center) </strong> </h5>
                                 </div>
-                                <div class="col text-uppercase ">
+                                <div class="col text-uppercase d-flex end">
                                     <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info text-white"> <strong>
-                                            My Complete News</strong> </a>
+                                            My Complete News</strong> 
+                                    </a>
 
                                     <a href="{{ route('reading.todayCompleteNews') }}"
                                         class="btn btn-sm btn-primary text-white"> <strong>
-                                            Today Complete News</strong></a>
+                                            Today Complete News</strong>
+                                    </a>
+
+                                    <a href="{{ route('kpi.EmployeeKPI') }}"
+                                    class="btn btn-sm btn-info text-white"> <strong>
+                                        KPI</strong>
+                                </a>
                                 </div>
 
                                 <!-- Button Add Category modal -->
@@ -31,7 +38,7 @@
                     </div>
                     <style>
                         .kpi {
-                            background: #ccdac7;
+                            background: #cedac7;
                         }
                     </style>
                     <div class="row">
@@ -72,7 +79,7 @@
                     </div>
 
                     <!--Input Group Start-->
-                    <form action="" class="py-3">
+                    {{-- <form action="" class="py-3">
 
                         <div class="row">
                             <div class="col-md-6 col-sm-6">
@@ -95,10 +102,10 @@
                             </div>
 
                         </div>
-                    </form>
+                    </form> --}}
                     <div class="row">
                         <div class="col">
-                            <table class="table table-sm table-striped table-bordered" style="width:100%">
+                            <table  id="example"  class="table table table-sm table-striped table-bordered" style="width:100%">
                                 <thead style="font-size:0.8em;">
                                     <tr>
                                         <th width="2%" class="text-center">SL</th>
@@ -109,8 +116,9 @@
                                         <th width="10%">News Type</th>
 
                                         <th width="5%" class="text-center">Status</th>
-                                        <th width="5%" class="text-center">Updating</th>
+                                        <th width="10%" class="text-center">Updating</th>
                                         <th width="30%" class="text-center">Last Activity</th>
+                                        <th width="10%" class="text-center">Assign</th>
                                         <th width="5%" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -232,12 +240,12 @@
           <td height="10px">${index + 1}</td>
           <td><img src="${news.image}" width="50px" alt=""></td>
           <td>${news.title}</td>
-          <td>${news.user.name}</td>
+          <td>${news.reporter.name}</td>
           <td>${news.nType}</td>
      
-          <td class="text-center ${news.status === 0 ? 'btn-warning' : 'btn-primary'}">${getStatusText(news.status)}</td>
-          <td>
-            <div class="d-flex justify-content-between align-items-center">
+          <td class="text-center ${news.status === 5 ? 'btn-primary' : 'btn-danger'}">${getStatusText(news.status)}</td>
+          <td class="text-center">
+            <div class="d-flex justify-content-center align-items-center">
               ${news.track !== null ? `
                                 <div>
                                   <div class="wrapper">
@@ -249,14 +257,21 @@
           </td>
 
 
-          <td>
+        
                       
             
              </td>
 
+             <td class="text-center"> ${news.logs !== null ? `
+                                
+                                <span class="text-green "> Edited By ${news.logs.name} and  Last Modified by  ${news.user !==null ? news.user.name : ''}</span>` : ''}</td>
 
 
-          <td>
+
+                               
+
+
+       <td>
             <div class="btn-group btn-block" role="group" aria-label="Basic example">
               <a href="/reading/show/${news.id}" type="button" class="btn btn-sm btn-primary">View</a>
               <button ${news.track !== null ? 'disabled' : ''} onclick="editNews(${news.id})" type="button"
@@ -264,6 +279,8 @@
               <button onclick="deleteData(${news.id})" type="button" class="btn btn-sm btn-danger">Delete</button>
             </div>
           </td>
+
+          
         </tr>
       `;
 
@@ -279,7 +296,9 @@
             function getStatusText(status) {
                 switch (status) {
                     case 4:
-                        return 'Approved';
+                        return 'Pending';
+                    case 5:
+                        return 'Complete';
 
                     default:
                         return 'Pending';
@@ -349,7 +368,7 @@
                 confirmButtonText: "Yes, delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete('/news/delete/' + id)
+                    axios.delete('sub_editor/delete/' + id)
                         .then(function(response) {
                             window.location.reload();
                         })

@@ -16,7 +16,8 @@
 
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
-                                   
+                                    <a href="{{ route('sub_editor') }}" class="btn btn-sm btn-primary px-3 rounded-0">
+                                        Reading Centre</a>
                                     <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info px-3 rounded-0">
                                         Back</a>
                                 </div>

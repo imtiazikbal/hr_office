@@ -63,9 +63,6 @@ Route::get('/dashboard', function () {
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-
-
-
 Route::get('logout01', function () {
     auth()->logout();
     return redirect('/');
@@ -73,9 +70,8 @@ Route::get('logout01', function () {
 
 // Here Only Department Route
 
-
 Route::get('checkRole', function () {
-   // $user = auth()->user();
+    // $user = auth()->user();
     // $role= Role::where('slug','editor')->first();
     // $user->roles()->attach($role);
 
@@ -84,20 +80,15 @@ Route::get('checkRole', function () {
     // $permissions = Permission::first();
     // $user->permissions()->attach($permissions);
 
-    return "Done";
-
-   
-   
+    return 'Done';
 });
-Route::group(['middleware'=>['auth','role:editor']],function(){
-    Route::get('canRole',function(){
+Route::group(['middleware' => ['auth', 'role:editor']], function () {
+    Route::get('canRole', function () {
         dd('hi');
     });
 });
 
-
-
-//role route 
+//role route
 Route::controller(RoleController::class)
     ->group(function () {
         Route::get('role', 'index')->name('role');
@@ -109,7 +100,6 @@ Route::controller(RoleController::class)
         Route::delete('role/delete/{role}', 'destroy')->name('role.delete');
     })
     ->middleware(['auth', 'verified']);
-
 
 //permission Route
 
@@ -125,9 +115,7 @@ Route::controller(PermissionController::class)
     })
     ->middleware(['auth', 'verified']);
 
-
-
-    Route::controller(AssignRolePermissionController::class)
+Route::controller(AssignRolePermissionController::class)
     ->group(function () {
         Route::get('rolePermission', 'index')->name('rolePermission');
         Route::get('rolePermission/show', 'show')->name('rolePermission.show');
@@ -139,14 +127,7 @@ Route::controller(PermissionController::class)
     })
     ->middleware(['auth', 'verified']);
 
-
-
-
-
-
 //profile route
-
-
 
 Route::controller(EmployeeProfileController::class)
     ->group(function () {
@@ -154,21 +135,14 @@ Route::controller(EmployeeProfileController::class)
         Route::post('profilePhotoUpdate', 'profilePhotoUpdate')->name('profilePhotoUpdate');
         Route::get('profile', 'profile')->name('profile');
         Route::get('get/profile/details', 'getProfileDetails')->name('getProfileDetails');
-      
     })
     ->middleware(['auth', 'verified']);
 
-
-    Route::controller(EmployeeDetailsController::class)
+Route::controller(EmployeeDetailsController::class)
     ->group(function () {
-       
         Route::post('employee/details/{id}', 'employeeDetails')->name('employeeDetails');
     })
     ->middleware(['auth', 'verified']);
-
-
-
-
 
 Route::controller(DepartmentController::class)
     ->group(function () {
@@ -244,6 +218,9 @@ Route::controller(DraftNewsController::class)
 Route::controller(CentreNewsController::class)
     ->group(function () {
         Route::get('centre', 'index')->name('centre');
+
+        Route::get('allCentreNews', 'AllCentreNews')->name('centre.allNews');
+
         Route::get('centre/show/{centreNews}', 'show')->name('centre.show');
         Route::get('centre/create', 'create')->name('centre.create');
         Route::post('centre/store', 'store')->name('centre.store');
@@ -274,12 +251,9 @@ Route::controller(SubEditorController::class)
         Route::post('reading/update/{subEditor}', 'update')->name('sub_editor.update');
         Route::delete('sub_editor/delete/{subEditor}', 'destroy')->name('sub_editor.delete');
 
-
-        // Here Update News[ When a redaing section update the news but not complete the news] 
+        // Here Update News[ When a redaing section update the news but not complete the news]
 
         Route::post('reading/update/central/reading/news/{subEditor}', 'updateCentralNewsbyReading')->name('reading.updateCentralNewsbyReading');
-
-
 
         // tracking here
         Route::get('tracker/{subEditor}', 'tracking')->name('sub_editor.tracking');
@@ -291,34 +265,27 @@ Route::controller(SubEditorController::class)
 
 Route::controller(ReadingController::class)
     ->group(function () {
-
         Route::get('reading/mycomplete/news', 'completeNews')->name('reading.myNews');
         Route::get('reading/myRawNews/', 'rawNews')->name('reading.myRawNews');
         Route::get('reading/todayCompleteNews/', 'todayCompleteNews')->name('reading.todayCompleteNews');
 
+        //view Complete News
+        Route::get('reading/view/complete/news/{news}', 'view')->name('reading.view');
 
 
-    })->middleware(['auth', 'verified']);
+        // Edit Complete News
+        Route::get('reading/edit/complete/news/{news}', 'edit')->name('reading.edit');
+        Route::post('reading/update/complete/news/{reading}', 'update')->name('reading.update');
+    })
+    ->middleware(['auth', 'verified']);
 
-
-
-
-    //KPI Controller 
-    Route::controller(KPIController::class)
+//KPI Controller
+Route::controller(KPIController::class)
     ->group(function () {
-
         Route::get('EmployeeKPI', 'EmployeeKPI')->name('kpi.EmployeeKPI');
         Route::get('EmployeeKPI/{date}', 'EmployeeKPIFilterByDate')->name('kpi.EmployeeKPIByDate');
-
-
         Route::get('EmployeeKPIFilter', 'EmployeeKPIFilterByFromToDate')->name('kpi.EmployeeKPIByFromToDate');
-       
-
-
-
-    })->middleware(['auth', 'verified']);
-
-
-
+    })
+    ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

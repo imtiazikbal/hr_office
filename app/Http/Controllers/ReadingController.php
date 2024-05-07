@@ -73,23 +73,31 @@ class ReadingController extends Controller
         ->with('user', 'reporter')
         ->orderBy('created_at', 'desc')
         ->paginate(10);
+        foreach ($tComNews as $news) {
+            $text = $news->body;
+            $news->body = BengaliWordCounter::countWords($text);
+        }
         return view('backend.pages.reading.complete', compact('tComNews'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reading $reading)
+    public function view(Reading $news)
     {
-        //
+        return view('backend.pages.reading.view', compact('news'));
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reading $reading)
+    public function edit(Reading $news)
     {
-        //
+       //dd($reading);
+
+       return view('backend.pages.reading.edit', compact('news'));
+
     }
 
     /**
@@ -97,7 +105,19 @@ class ReadingController extends Controller
      */
     public function update(Request $request, Reading $reading)
     {
-        //
+      Reading::where('id', $reading->id)->update([
+        'title' => $reading->title,
+        'body' => $request->body,
+        'comment' => $reading->comment,
+        'image' => $reading->image,
+        'user_id' => auth()->user()->id,
+        'page_no' => $reading->page_no,
+        'column_no' => $reading->column_no,
+        'reporter_id' => $reading->user_id,
+        'news_id' => $reading->news_id  
+      ]);
+
+      return redirect()->route('reading.myNews');
     }
 
     /**
@@ -105,6 +125,6 @@ class ReadingController extends Controller
      */
     public function destroy(Reading $reading)
     {
-        //
+
     }
 }

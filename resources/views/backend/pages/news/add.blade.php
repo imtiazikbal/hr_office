@@ -53,9 +53,12 @@
                                             <label for="exampleFormControlTextarea3">
                                                 <strong> News Body : </strong>
                                             </label>
-                                            <textarea name="body" id="summernote" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
+                                            {{-- <textarea name="body" id="summernote" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
                                                 {{ old('body') }}
-                                            </textarea> 
+                                            </textarea>  --}}
+                                            <textarea></textarea>
+                                       
+                                            <div>Selected Words: <span id="selectedWords">0</span></div>
                                             {{-- <textarea name="body" id="body" cols="30" rows="10"></textarea> --}}
                                             <style type="text/css">
                                                 #mce_0_toolbar2 {
@@ -195,7 +198,7 @@
                 // Submit the form
                 document.getElementById('save-form').submit();
             }
-        
+
             function submitToCentral() {
                 // Set the form action to the central route
                 document.getElementById('save-form').action = "{{ route('centre.store') }}";
@@ -205,7 +208,7 @@
         </script>
 
         <!-- Load TinyMCE -->
-       <script src="{{ asset('assets') }}/js/tiny-mce/jquery.tinymce.js" type="text/javascript"></script>
+        <script src="{{ asset('assets') }}/js/tiny-mce/jquery.tinymce.js" type="text/javascript"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 setupTinyMCE();
@@ -322,10 +325,4 @@
             })()
         </script>
     @endif>
-
-
-
-
-
-
 @endsection

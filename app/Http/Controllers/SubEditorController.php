@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\SubEditor;
 use App\Models\CentreNews;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class SubEditorController extends Controller
 {
@@ -30,6 +31,7 @@ class SubEditorController extends Controller
         $newses = $newses
             ->with('user')
             ->orderBy('id', 'desc')
+  
 
             ->with('track')
             ->paginate($request->input('datatable_length', 10));
@@ -47,12 +49,12 @@ class SubEditorController extends Controller
      */
     public function returnData(Request $request)
     {
-        $newses = SubEditor::query();
+        // $newses = SubEditor::with('user', 'track','logs')
 
-        // Paginate the results
-        $newses = $newses
-            ->with('user', 'track','logs')
+
+   $newses = SubEditor::with('user', 'track','logs','reporter')
             ->orderBy('status', 'asc')
+       
 
             ->with('track')
             ->get();
@@ -156,6 +158,10 @@ class SubEditorController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
+
+
+
     public function update(Request $request, SubEditor $subEditor)
     {
         $validatedData = $request->validate([
@@ -222,7 +228,8 @@ class SubEditorController extends Controller
 
             News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
             CentreNews::where('id', $subEditorNews->news_id)->update(['status' => 4]);
-            SubEditor::where('news_id', $subEditorNews->news_id)->update(['status' => 4]);
+            SubEditor::where('news_id', $subEditorNews->news_id)->update(['status' => 5]);
+            SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs_id' => null]);
 
             $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
@@ -275,7 +282,8 @@ class SubEditorController extends Controller
 
             News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
             CentreNews::where('id', $subEditorNews->id)->update(['status' => 4]);
-            SubEditor::where('news_id', $subEditorNews->news_id)->update(['status' => 4]);
+            SubEditor::where('news_id', $subEditorNews->news_id)->update(['status' => 5]);
+            SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs_id' => null]);
 
             $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
@@ -301,7 +309,7 @@ class SubEditorController extends Controller
             'body' => $centreNews->body,
             'comment' => $request->comment,
             'image' => $centreNews->image,
-            'user_id' => auth()->user()->id,
+            'user_id' => null,
             'page_no' => $validatedData['page_no'],
             'column_no' => $validatedData['column_no'],
             'reporter_id' => $centreNews->user_id,
@@ -326,6 +334,7 @@ class SubEditorController extends Controller
             SubEditor::where('id', $id)->update([
                 'track_id' => auth()->user()->id,
                 'start_time' => $current_time,
+                'user_id' => auth()->user()->id,
             ]);
 
             return response('yes', 200);
@@ -339,6 +348,7 @@ class SubEditorController extends Controller
         SubEditor::where('id', $id)->update([
             'track_id' => null,
             'start_time' => null,
+            'user_id' => auth()->user()->id,
         ]);
         return redirect()->route('sub_editor')->with('success', 'Successfully Back Reading Central.');
     }
@@ -385,6 +395,8 @@ class SubEditorController extends Controller
                 'reporter_id' => $subEditor->user_id,
                 'news_id' => $subEditor->news_id,
                 'nType' => $request->nType,
+                'logs_id' => auth()->user()->id,
+                'updated_at' => $current_time,
                 
             ]);
 
@@ -393,7 +405,7 @@ class SubEditorController extends Controller
             News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
             CentreNews::where('id', $subEditorNews->news_id)->update(['status' => 4]);
 
-            SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
+            // SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
 
             $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
@@ -432,7 +444,7 @@ class SubEditorController extends Controller
             News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
             CentreNews::where('id', $subEditorNews->id)->update(['status' => 4]);
   
-            SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
+            SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs_id' => auth()->user()->id, 'updated_at' => $currentDateTime]);
 
            // Get current datetime in a format compatible with your database
 
@@ -440,5 +452,12 @@ class SubEditorController extends Controller
 
             return redirect()->route('sub_editor')->with('success', 'Successfully Updated the News.');
         }
+    }
+
+
+    function destroy(SubEditor $subEditor){
+        File::delete(public_path($subEditor->image));
+        $subEditor->delete();
+
     }
 }

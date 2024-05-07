@@ -142,7 +142,7 @@
                             <div>
                                 <a href="saleslist.php" class="nav-link text-white p-2 mb-2 sidebar_link"
                                     data-toggle="collapse" data-target="#brandcollapse" aria-expanded="true">
-                                    <span class="mnuIcon">&#9780;</span>Reading
+                                    <span class="mnuIcon">&#9780;</span>Reading Centre
                                     <i class="fas fa-angle-down fa-lg float-right pt-1"></i>
                                 </a>
                                 <div id="brandcollapse" class="collapse auto-collapse">
@@ -263,17 +263,16 @@
                                 <div id="storemanagecollapse" class="collapse auto-collapse show">
                                     <div class="card-body p-0">
                                         <ul class="nav-item pl-3 dropdownMenuItem">
-                                            <a href="#" class="nav-link py-1"> <i
+                                            {{-- <a href="#" class="nav-link py-1"> <i
                                                     class="fas fa-laptop-medical pt-1 mr-2"></i>General</a>
                                             <a href="#" class="nav-link py-1"> <i
                                                     class="fas fa-laptop-medical pt-1 mr-2"></i>Business Info</a>
                                             <a href="#" class="nav-link py-1"> <i
                                                     class="fas fa-laptop-medical pt-1 mr-2"></i>Featured</a>
                                             <a href="#" class="nav-link py-1"> <i
-                                                    class="fas fa-laptop-medical pt-1 mr-2"></i>Activity Log</a>
-                                            <a href="#" class="nav-link py-1"> <i
-                                                    class="fas fa-laptop-medical pt-1 mr-2"></i>Connect Device</a>
-
+                                                    class="fas fa-laptop-medical pt-1 mr-2"></i>Activity Log</a> --}}
+                                            <a href="{{ url('/logout01') }}" class="nav-link py-1"> <i class="fa-light fa-arrow-right-from-bracket"></i> LogOut</a>
+                                                   
                                         </ul>
                                     </div>
                                 </div>
@@ -287,7 +286,7 @@
                 <div class="col-xl-10 col-lg-9 col-md-9 col-sm-10 ml-auto fixed-top py-2 top-navbar"
                     style="background-color: #1C2733;">
                     <div class="row align-items-center">
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <div class="dropdown">
                                 <button type="button" class="btn text-muted dropdown-toggle drophvr"
                                     data-toggle="dropdown" data-display="static" aria-haspopup="true"
@@ -303,9 +302,9 @@
                                     <a class="dropdown-item " href="#">Add Quick Menu</a>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <form class="form-inline">
                                 <a href="" class="nav-link drophvr ml-md-auto">
                                     <i class="fas fa-users fas-lg "> </i>

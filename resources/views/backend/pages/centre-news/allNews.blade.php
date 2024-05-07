@@ -14,16 +14,15 @@
                                 </div>
 
 
-                                <div class="col text-uppercase ">
-                                    <a href="{{ route('centre.allNews') }}" class="btn btn-sm btn-warning px-3 rounded-0">
-                                        <strong>ALL Centre News</strong> </a>
-                                </div>
+                             
 
 
                                 <!-- Button Add Category modal -->
                                 <div class="ml-auto mr-3">
                                     <a href="{{ route('news.create') }}" class="btn btn-sm btn-info px-3 rounded-0">Add
                                         News</a>
+                                    <a href="{{ route('centre') }}" class="btn btn-sm btn-info px-3 rounded-0">Back</a>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -64,8 +63,9 @@
 
                                         <th>Title</th>
                                         <th>Reporter</th>
+                                   
                                 
-                                        <th>Forward</th>
+                                  
                                     
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -86,24 +86,14 @@
 
 
 
-                                            <td>
-                                                @if ($news->status != 3)
-                                                <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                    <button onclick="sendReading({{ $news->id }})" type="button"
-                                                        class="btn btn-sm btn-primary">Send to Reading</button>
-                
+                                        
 
-                                                </div>
-                                                @elseif($news->status == 3) 
-                                                <div class="btn-group btn-block" role="group" aria-label="Basic example">
-                                                   <span class="text-success text-center">Already Send</span>
-                
 
-                                                </div>
-                                                @endif
-                                            </td>
                                             <td class="badge badge-danger">
-                                                {{ $news->status === 0 ? 'Pending' : 'Unpublished' }}</td>
+                                                {{ $news->status === 0 ? 'Pending' : 'Unpublished' }}
+                                            </td>
+
+
                                             <td>
 
                                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">

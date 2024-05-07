@@ -56,6 +56,7 @@
                                             <textarea name="body" id="summernote" class="tinymce form-control rounded-0" style="font-size:30px;" rows="10">
                                                {!! $news->body !!}
                                             </textarea>
+                                            <div>Selected Words: <span id="selectedWords">0</span></div>
                                             {{-- <textarea name="body" id="body" cols="30" rows="10"></textarea> --}}
                                             <style type="text/css">
                                                 #mce_0_toolbar2 {

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\News;
-use App\Models\CentreNews;
 use App\Models\DraftNews;
+use App\Models\CentreNews;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\File;
 class CentreNewsController extends Controller
 {
     /**
@@ -25,8 +28,9 @@ class CentreNewsController extends Controller
     
         // Paginate the results
         $centreNewses = $centreNewses->with('user')
-                         ->orderBy('id', 'desc')
-                         ->where('status', '=', 0)
+                         ->whereDate('created_at', Carbon::today())
+                         ->orderBy('status', 'asc')
+                      
                          ->with('user')
                          ->paginate($request->input('datatable_length', 10));
 
@@ -40,9 +44,30 @@ class CentreNewsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+
+     public function AllCentreNews(Request $request)
     {
-        //
+        $centreNewses = CentreNews::query();
+
+        // Filter by search query if provided
+        if ($request->has('search')) {
+            $centreNewses->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+    
+        // Paginate the results
+        $centreNewses = $centreNewses->with('user')
+                         
+                         ->orderBy('status', 'asc')
+                      
+                         ->with('user')
+                         ->paginate($request->input('datatable_length', 10));
+
+
+
+  
+        // return $centreNewses;
+        return view('backend.pages.centre-news.allNews', compact('centreNewses'));
+        
     }
     public function view()
 
@@ -244,7 +269,9 @@ class CentreNewsController extends Controller
      */
     public function destroy(CentreNews $centreNews)
     {
-        //
+        File::delete($centreNews->image);
+        // Delete the image
+        $centreNews->delete();
     }
 
     function print(CentreNews $centreNews){

@@ -24,7 +24,8 @@
                                     <a href="{{ route('reading.myRawNews') }}" class="btn btn-sm btn-info px-3 rounded-0">
                                         All Raw And Complete News</a>
 
-
+                                        <a href="{{ route('sub_editor') }}" class="btn btn-sm btn-primary px-3 rounded-0">
+                                            Reading Centre</a>
                                     <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-secondary px-3 rounded-0">
                                         Back</a>
                                 </div>
@@ -99,10 +100,9 @@
                                                     <td>
                                                         <div class="btn-group btn-block" role="group"
                                                             aria-label="Basic example">
-                                                            <a href="{{ route('sub_editor.show', $news->id) }}"
+                                                            <a href="{{ route('reading.view', $news->id) }}"
                                                                 type="button" class="btn btn-sm btn-primary">View</a>
-                                                            <a href="{{ route('sub_editor.edit', $news->id) }}"
-                                                                type="button" class="btn btn-sm btn-info">Edit</a>
+                                                          
                                                             {{-- <button onclick="deleteData({{ $news->id }})" type="button"
                                                                 class="btn btn-sm btn-danger">Delete</button> --}}
                                                         </div>

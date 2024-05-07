@@ -13,7 +13,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets') }}/img/favicon_io/favicon-16x16.png">
     <link rel="manifest" href="{{ asset('assets') }}/img/favicon_io/site.webmanifest">
     <link rel="shortcut icon" href="./img/favicon.ico">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/css/bootstrap.min.css">
     <!-- animate.css -->
@@ -49,17 +48,20 @@
     {{-- summer note --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script> --}}
-    <script src="https://cdn.tiny.cloud/1/vsnnrc7wucpxmp4qlyzttrzn2q4ug731s4qbjyohjr0likio/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="stylesheet">
+
+    <script src="https://cdn.tiny.cloud/1/vsnnrc7wucpxmp4qlyzttrzn2q4ug731s4qbjyohjr0likio/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
 
     <title>Admin Panel</title>
 
     <style>
         @import url('https://fonts.maateen.me/solaiman-lipi/font.css');
 
-        body{
+        body {
             font-family: 'SolaimanLipi', Arial, sans-serif !important;
         }
-        </style>
+    </style>
 </head>
 
 <body>
@@ -103,33 +105,52 @@
     </script>
     <script>
         $('#summernote').summernote({
-          tabsize: 3,
-          height: 700
+            tabsize: 3,
+            height: 700
         });
-      </script>
+    </script>
 
-    
-        <script>
-      tinymce.init({
+<script>
+    tinymce.init({
         selector: 'textarea',
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
         tinycomments_author: 'Author name',
-        mergetags_list: [
-          { value: 'First.Name', title: 'First Name' },
-          { value: 'Email', title: 'Email' },
+        content_css: 'https://fonts.maateen.me/solaiman-lipi/font.css', 
+        content_style: "body{ font-family: 'SolaimanLipi', sans-serif;  font-size: 20px;   }",
+        mergetags_list: [{
+                value: 'First.Name',
+                title: 'First Name'
+            },
+            {
+                value: 'Email',
+                title: 'Email'
+            },
         ],
-        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-      });
-    </script>
-     
+        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject(
+            "See docs to implement AI Assistant")),
+        setup: function(editor) {
+            editor.on("change keyup", function() {
+                var content = editor.getContent();
+                var totalWords = content.trim().split(/\s+/).filter(Boolean).length;
+                document.getElementById('totalWords').textContent = totalWords;
+            });
 
-    <!-- Your custom CKEDITOR setup -->
-    <!-- <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace('editor1');
-    </script> -->
+            editor.on('SelectionChange', function() {
+                var selectedText = editor.selection.getContent({format: 'text'});
+                var selectedWords = selectedText.trim().split(/\s+/).filter(Boolean).length;
+                document.getElementById('selectedWords').textContent = selectedWords;
+            });
+        }
+    });
+</script>
+
+  <style>
+    .tox-statusbar__branding {
+  display: none;
+}
+  </style>
 </body>
 
 </html>

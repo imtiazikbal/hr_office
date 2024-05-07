@@ -26,7 +26,7 @@
                                     All Raw And Complete News</a>
 
 
-                                <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-secondary px-3 rounded-0">
+                                <a href="{{ route('sub_editor') }}" class="btn btn-sm btn-secondary px-3 rounded-0">
                                     Back</a>
                             </div>
                         </div>

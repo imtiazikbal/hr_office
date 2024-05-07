@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sub_editors', function (Blueprint $table) {
-            $table->unsignedBigInteger('logs')->nullable();
-            $table->foreign('logs')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('logs_id')->nullable();
+            $table->foreign('logs_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('sub_editors', function (Blueprint $table) {
-            $table->dropColumn('logs');
+            $table->dropColumn('logs_id');
         });
     }
 };

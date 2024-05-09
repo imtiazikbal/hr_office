@@ -5,19 +5,17 @@
         <div class="container-fluid">
             <div class="row" style="color: #444;">
                 <div class="col-xl-10 col-lg-9 col-md-9 ml-auto">
-
-                    <div class="row py-2 ">
+                    <div class="row py-2">
                         <div class="col">
-                            <div class="row shadow-sm text-muted">
+                            <div class="row shadow-sm text-muted" style="background: #ffffff2f;">
 
 
 
+                                <div class="btn-group btn-block" role="group" aria-label="Basic example">
+                                    <button onclick="window.location.reload()"
+                                        class="btn btn-sm btn-warning">Reload</button>
 
-
-                                <!-- Button Add Category modal -->
-                                <div class="ml-auto mr-3">
-
-                                    <a href="{{ route('kpi.EmployeeKPI') }}" class="btn btn-sm btn-primary px-3 rounded-0">
+                                   <a href="{{ route('kpi.EmployeeKPI') }}" class="btn btn-sm btn-primary px-3 rounded-0">
                                        KPI</a>
 
 
@@ -28,10 +26,15 @@
                                             Reading Centre</a>
                                     <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-secondary px-3 rounded-0">
                                         Back</a>
+                                   
                                 </div>
+
+
                             </div>
                         </div>
                     </div>
+
+                    
 
 
 

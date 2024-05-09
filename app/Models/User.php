@@ -43,7 +43,15 @@ public function employeeDetails(){
     return $this->hasMany(EmployeeDetails::class);
     
 }
+public function subEditors()
+{
+    return $this->belongsToMany(SubEditor::class);
+}
 
+public function subEditorLogs()
+{
+    return $this->belongsToMany(SubEditor::class, 'sub_editor_logs')->withTimestamps();
+}
 //Reading central updated log user
 
 

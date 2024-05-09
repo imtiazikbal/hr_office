@@ -22,7 +22,15 @@ class SubEditor extends Model
     public function logs(){
         return $this->belongsTo(User::class);      
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 
+    public function logss()
+{
+    return $this->belongsToMany(User::class, 'sub_editor_logs')->withTimestamps();
+}
     
 
 

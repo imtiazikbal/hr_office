@@ -7,13 +7,13 @@ use App\Models\News;
 use App\Models\User;
 use App\Models\RawNews;
 use App\Models\Reading;
-use App\Models\Employee;
 use App\Models\SubEditor;
 use App\Models\CentreNews;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 
-class SubEditorController extends Controller
+class ReadingCentralController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,24 +29,34 @@ class SubEditorController extends Controller
 
         // Paginate the results
         $newses = $newses
-            ->with('user')
+            ->with('user','track','logss')
             ->orderBy('status', 'asc')
+            ->paginate($request->input('datatable_length', 50));
 
-            ->with('track')
-            ->paginate($request->input('datatable_length', 10));
+
 
         $employeeReading = User::whereHas('employee', function ($query) {
             $query->where('department_id', 1);
         })->get();
+
+
+
         $employeeReading1 = User::whereHas('employee', function ($query) {
             $query->where('department_id', 1);
         })->get();
 
+
+
+       
         $user = User::find(auth()->user()->id); // Get the user by ID
         $count = $user->subEditors->count(); // Get the count of related subEditors
-        //return $employeeReading;
+        //return $subEditors;
+
+
         return view('backend.pages.sub-editor.index', compact('newses', 'employeeReading', 'employeeReading1', 'count'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -315,45 +325,116 @@ class SubEditorController extends Controller
         $validatedData = $request->validate([
             'body' => ['required', 'string'],
         ]);
-
         $subEditorNews = SubEditor::find($subEditor->id);
         $subEditorNewsImage = $subEditorNews->image;
 
-        $current_time = Carbon::now()->format('h:i:s A');
-        $subEditor->update([
-            'user_id' => auth()->user()->id,
-            'track_id' => null,
-            'end_time' => $current_time,
-        ]);
+        if ($request->hasFile('image')) {
+            $img = $request->file('image');
+            $t = time();
+            $file_name = $img->getClientOriginalName();
+            $img_name = "{$t}-{$file_name}";
+            $imgUrl = "uploads/subEditor/{$img_name}";
+            // Upload File
+            $img->move(public_path('uploads/subEditor'), $img_name);
+            $current_time = Carbon::now()->format('h:i:s A');
+            $subEditor->update([
+                'user_id' => auth()->user()->id,
+                'track_id' => null,
+                'end_time' => $current_time,
+            ]);
 
-        // Update SubEditor Table(Reading Centre News)
-        SubEditor::where('id', $subEditor->id)->update([
-            'title' => $subEditor->title,
-            'body' => $validatedData['body'],
-            'comment' => $request->comment,
-            'image' => $subEditor->image,
-            'user_id' => auth()->user()->id,
-            'page_no' => $subEditor->page_no,
-            'column_no' => $subEditor->column_no,
-            'reporter_id' => $subEditor->user_id,
-            'news_id' => $subEditor->news_id,
-            'nType' => $request->nType,
-            'logs_id' => auth()->user()->id,
-        ]);
+            // Update SubEditor Table(Reading Centre News)
 
-        $currentDateTime = now()->toDateTimeString();
+            SubEditor::where('id', $subEditor->id)->update([
+                'title' => $validatedData['title'],
+                'body' => $validatedData['body'],
+                'comment' => $request->comment,
+                'image' => $request->image,
+                'user_id' => auth()->user()->id,
+                'page_no' => $validatedData['page_no'],
+                'column_no' => $validatedData['column_no'],
+                'reporter_id' => $subEditor->user_id,
+                'news_id' => $subEditor->news_id,
+                'nType' => $request->nType,
+                'logs_id' => auth()->user()->id,
+                'updated_at' => $current_time,
+                
+            ]);
 
-        News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
-        CentreNews::where('id', $subEditorNews->news_id)->update(['status' => 4]);
+            $currentDateTime = now()->toDateTimeString();
 
-        // SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
+            News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
+            CentreNews::where('id', $subEditorNews->news_id)->update(['status' => 4]);
 
-        $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
+            // SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
 
-        News::where('id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
+            $currentDateTime = now()->toDateTimeString(); // Get current datetime in a format compatible with your database
 
-        return redirect()->route('sub_editor')->with('success', 'Successfully Updated the News.');
+            News::where('id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
+
+            return redirect()->route('sub_editor')->with('success', 'Successfully Updated the News.');
+
+
+        } else {
+            $current_time = Carbon::now()->format('h:i:s A');
+
+            $subEditor->update([
+                'user_id' => auth()->user()->id,
+                'track_id' => null,
+                'end_time' => $current_time,
+            ]);
+
+
+            SubEditor::where('id', $subEditor->id)->update([
+                'title' => $validatedData['title'],
+                'body' => $validatedData['body'],
+                'comment' => $request->comment,
+                'image' => $subEditor->image,
+                'user_id' => auth()->user()->id,
+                'page_no' => $validatedData['page_no'],
+                'column_no' => $validatedData['column_no'],
+                'reporter_id' => $subEditor->user_id,
+                'news_id' => $subEditor->news_id,
+                'nType' => $request->nType,
+                
+            ]);
+         
+            $currentDateTime = now()->toDateTimeString();
+
+            News::where('id', $subEditorNews->news_id)->update(['status' => 4]);
+            CentreNews::where('id', $subEditorNews->id)->update(['status' => 4]);
+  
+            SubEditor::where('news_id', $subEditorNews->news_id)->update(['logs_id' => auth()->user()->id, 'updated_at' => $currentDateTime]);
+
+           // Get current datetime in a format compatible with your database
+
+            News::where('id', $subEditorNews->news_id)->update(['logs' => auth()->user()->id, 'updated_at' => $currentDateTime]);
+
+            return redirect()->route('sub_editor')->with('success', 'Successfully Updated the News.');
     }
+    }
+
+
+
+    // Route for update proofing
+    function updateProofNews(Request $request, SubEditor $subEditor){
+
+         $request->validate([
+            'proof' => ['required'],
+        ]);
+
+      SubEditor::where('id', $subEditor->id)->update([
+        'status' => $request->proof 
+      ]);
+
+      return redirect()->back()->with('success', 'Successfully Updated the News.');
+
+    }
+
+
+
+
+
 
     function destroy(SubEditor $subEditor)
     {

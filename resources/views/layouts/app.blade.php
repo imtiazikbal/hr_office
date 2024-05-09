@@ -52,8 +52,11 @@
 
     <script src="https://cdn.tiny.cloud/1/vsnnrc7wucpxmp4qlyzttrzn2q4ug731s4qbjyohjr0likio/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <title>Admin Panel</title>
+        
+        <title>@yield('title')</title> <!-- Display dynamic title --> <!-- Display dynamic title -->
 
     <style>
         @import url('https://fonts.maateen.me/solaiman-lipi/font.css');
@@ -113,8 +116,8 @@
 <script>
     tinymce.init({
         selector: 'textarea',
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown fullscreen',
+        toolbar: 'undo redo | fullscreen | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat ',
         tinycomments_mode: 'embedded',
         tinycomments_author: 'Author name',
         content_css: 'https://fonts.maateen.me/solaiman-lipi/font.css', 
@@ -145,6 +148,7 @@
         }
     });
 </script>
+
 
   <style>
     .tox-statusbar__branding {

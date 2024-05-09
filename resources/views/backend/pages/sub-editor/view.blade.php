@@ -95,7 +95,7 @@
                                             </path>
                                             <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
                                         </svg>
-                                        {{ $subEditor->reporter }}
+                                        {{ $subEditor->reporter['name'] }}
 
                                 </h5>
 

@@ -5,7 +5,6 @@
         <div class="container-fluid">
             <div class="row" style="color: #444;">
                 <div class="col-xl-10 col-lg-9 col-md-9 ml-auto">
-
                     <div class="row py-2">
                         <div class="col">
                             <div class="row shadow-sm text-muted" style="background: #ffffff2f;">
@@ -13,23 +12,30 @@
 
 
                                 <div class="btn-group btn-block" role="group" aria-label="Basic example">
+                                    <div class="col text-uppercase ">
+                                        <strong>Today's Task</strong>
+                                    </div>
                                     <button onclick="window.location.reload()"
                                         class="btn btn-sm btn-warning">Reload</button>
+
+                                        <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-info text-white"> <strong>
+                                            My Complete News</strong>
+                                    </a>
+
                                     <a href="{{ route('reading.todayCompleteNews') }}"
                                         class="btn btn-sm btn-primary text-white"> <strong>
                                             Today Complete News</strong>
                                     </a>
-                                    <a href="{{ route('kpi.EmployeeKPI') }}" class="btn btn-sm btn-info text-white">
+
+                                    <a href="{{ route('kpi.EmployeeKPI') }}" class="btn btn-sm btn-warning text-white">
                                         <strong>
                                             KPI</strong>
                                     </a>
-                                    <a href="{{ route('reading.myNews') }}" class="btn btn-sm btn-success text-white">
+                                    <a href="{{ route('sub_editor') }}" class="btn btn-sm btn-info text-white">
                                         <strong>
-                                            My Complete News</strong>
+                                            Back</strong>
                                     </a>
-                                    <a href="{{ route('assignNews') }}" class="btn btn-sm btn-warning text-black">
-                                        My Task <span class="badge bg-primary text-white">{{ $count }}</span>
-                                    </a>
+                                   
                                 </div>
 
 
@@ -37,208 +43,48 @@
                         </div>
                     </div>
 
+                    
                     <style>
                         .kpi {
                             background: #cedac7;
                         }
                     </style>
 
-
-
-                    @role('reading-head')
-                 
-                    <div class="row">
-                        <div class="col-md-12 d-flex justify-content-center align-items-center kpi">
-                            <h5 class="text-black mr-3 text-uppercase"> Search KPI</h5>
-
-                            <form action="{{ route('kpi.EmployeeKPIByFromToDate') }}">
-                                <div class="row d-flex justify-content-between align-items-center py-3">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="text-muted">Employee</label>
-                                            <select name="user_id" class="form-control" id="">
-                                                <option value="" selected disabled>Select Employee</option>
-                                                @foreach ($employeeReading as $employee)
-                                                    <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="text-muted">From Date</label>
-                                            <input type="date" class="form-control" name="from">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="text-muted">To Date</label>
-                                            <input type="date" class="form-control" name="to">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="submit" class="btn btn-secondary text-white">Search</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    @endrole()
-                    <div class="row">
-                        <div class="col px-4">
-                            <marquee direction="left" speed="normal" scrollamount="7" behavior="scroll"
-                                onmouseover="this.stop();" onmouseout="this.start();">
-                                <a href="https://digitalsolutions.ltd" class="px-5 text-decoration-none">
-                                    <style>
-                                        .scrlstyle {
-                                            color: #222;
-                                            font-size: 16px;
-                                        }
-                                    </style>
-                                    <span class="scrlstyle">
-                                        দয়া করে পেজটি রিলোড দিন ।
-                                </a>
-                            </marquee>
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div class="row py-3">
                         <div class="col">
                             <table class="table table table-sm table-striped table-bordered" style="width:100%">
                                 <thead style="font-size:0.8em;">
                                     <tr>
                                         <th width="2%" class="text-center">SL</th>
-                                      <th width="2%" class="text-center">Image</th> 
-                                        <th width="7%"class="text-center">Date</th>
-                                        <th width="20%" class="text-center">Title</th>
+                                        <th width="2%" class="text-center">Image</th>
 
+                                        <th width="22%"class="text-center">Title</th>
                                         <th width="8%" class="text-center"> Reporter</th>
-                                        <th width="8%">News Type</th>
+                                        <th width="10%">News Type</th>
 
-                                        <th width="5%" class="text-center">Status</th>
-                                        <th width="10%" class="text-center">Updating</th>
-                                        <th width="10%" class="text-center">Last Activity</th>
+                                
 
-                                        @role('reading-head')
-                                        <th width="15%" class="text-center">Assign</th>
-                                        @endrole
-
-                                        <th width="15%" class="text-center">Proofing</th>
                                         <th width="5%" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
 
                                 <tbody class="" style="font-size:0.8em;">
-                                    @foreach ($newses as $news)
+                                    @foreach ($tasks as $news)
                                         <tr>
                                             <td height="10px">{{ $loop->index + 1 }}</td>
-                                            <td><img src="{{ $news['image'] }}" width="50px" alt=""></td> 
-                                            <td>{{ $news['created_at']->format('j F Y') }}</td>
+                                            <td><img src="{{ $news['image'] }}" width="50px" alt=""></td>
                                             <td>{{ $news['title'] }}</td>
                                             <td>{{ $news['reporter']['name'] }}</td>
                                             <td>{{ $news['nType'] }}</td>
-
-                                            <td
-                                            class="text-center {{ $news['status'] === 5 ? 'btn-success' : ($news['status'] === 6 ? 'btn-info' : ($news['status'] === 7 ? 'btn-warning' : ($news['status'] === 8 ? 'btn-secondary' : 'btn-danger'))) }}">
-
-                                                {{ $news['status'] === 5 ? 'Complete' : ($news['status'] === 6 ? 'Assigned' : ($news['status'] === 7 ? 'First Proof' : ($news['status'] === 8 ? 'Recheck' : 'Unknown'))) }}
-
-                                            </td>
-                                            <td class="text-center">
-                                                <div class="d-flex justify-content-center align-items-center">
-                                                    @if ($news['track'] !== null)
-                                                        <div>
-                                                            <div class="wrapper">
-                                                                <div class="pulse"><i class="fa fa-plus"></i></div>
-                                                            </div>
-                                                        </div>
-                                                        <span class="text-green">{{ $news['track']['name'] }}</span>
-                                                    @endif
-                                                </div>
-                                            </td>
-
-                                            <td class="text-center">
-                                                <div class="overflow-auto p-3 bg-body-tertiary"
-                                                    style="max-width: 260px; max-height: 40px;">
-
-                                                    @foreach ($news->logss as $log)
-                                                        Update By {{ $log->name }}
-                                                        @if (!$loop->last)
-                                                            , <!-- Add a comma if it's not the last log -->
-                                                        @endif
-                                                    @endforeach
-
-
-                                                </div>
-
-                                            </td>
-                                            
-                                            @role('reading-head')
-                                            <td class="text-center">
-
-                                                <div class="btn-group btn-block d-flex justify-content-center align-items-center"
-                                                    role="group">
-                                                    <form action="{{ route('assignNews.assign', $news['id']) }}"
-                                                        class="d-flex justify-content-center align-items-center"
-                                                        method="POST">
-
-
-                                                        <select class="js-example-basic-multiple w-100 " name="names[]"
-                                                            multiple="multiple">
-
-                                                            @foreach ($employeeReading1 as $employee)
-                                                                <option value="{{ $employee->id }}">{{ $employee->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-primary text-white ml-2">Assign
-                                                        </button>
-
-                                                    </form>
-                                                </div>
-                                            </td>
-                                            @endrole()
-
-
-                                            <td class="text-center">
-
-                                                <div class="btn-group btn-block d-flex justify-content-center align-items-center"
-                                                    role="group">
-                                                    <form action="{{ route('reading.updateProofNews', $news['id']) }}"
-                                                        class="d-flex justify-content-center align-items-center"
-                                                        method="POST">
-
-
-                                                        <select name="proof" class="form-control" id="">
-                                                            <option value="" selected disabled></option>
-                                                            <option value="7">First Proof</option>
-                                                            <option value="8">ReCheck</option>
-                                                        </select>
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-primary text-white ml-2">Submit
-                                                        </button>
-
-                                                    </form>
-                                                </div>
-                                            </td>
-
-
+                                           
                                             <td>
-                                                <div class="btn-group btn-block d-flex justify-content-center align-items-center"
-                                                    role="group" aria-label="Basic example">
-
+                                                <div class="btn-group btn-block" role="group" aria-label="Basic example">
                                                     <a href="/reading/show/{{ $news['id'] }}" type="button"
                                                         class="btn btn-sm btn-primary">View</a>
-
-                                                    <button {{ $news['track'] !== null ? 'disabled' : '' }}
-                                                        onclick="editNews({{ $news['id'] }})" type="button"
-                                                        class="btn btn-sm btn-edit {{ $news['track'] !== null ? 'btn-secondary' : 'btn-info' }}">Edit</button>
-
-                                                        @role('reading-head')
-                                                    <button onclick="deleteData({{ $news['id'] }})" type="button"
-                                                        class="btn btn-sm btn-danger">Delete</button>
-                                                    @endrole
-
+                                                    <a href="{{ route('assignNews.edit', $news['id']) }}"
+                                                       
+                                                        class="btn btn-sm btn-info">Edit</a>
+                                                    
                                                 </div>
                                             </td>
                                         </tr>
@@ -247,7 +93,7 @@
 
 
                             </table>
-                            {{ $newses->links() }}
+                           
                         </div>
                     </div>
                 </div>
@@ -258,10 +104,6 @@
 
 
     <style>
-        .fntSize {
-            font-size: 10px;
-        }
-
         body {
             background-color: transparent
         }
@@ -336,24 +178,23 @@
     </style>
 
 
-    {{-- <script>
-    setTimeout(function() {
-        window.location.reload();
-    }, 5000); // 5000 milliseconds = 5 seconds
-</script> --}}
-
-
+    <script>
+        // 5 second window reload
+        window.onload = function() {
+            setTimeout("window.reload()", 5000);
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
         });
     </script>
-
-
     <script>
         function editNews(newsId) {
             // Disable all edit buttons
-
+            document.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.disabled = true;
+            });
 
             // Show updating message
             // You can customize this message as needed
